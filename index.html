@@ -1,249 +1,233 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="dark">
+<html lang="id" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#000000" />
+  <title>SakuOne — Tabungan Galaxy S21 FE</title>
+
+  <!-- PWA & Mobile Home Screen Meta Tags -->
+  <meta name="application-name" content="SakuOne" />
+  <meta name="apple-mobile-web-app-title" content="SakuOne" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>SakuOne — Tabungan</title>
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
-  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <meta name="theme-color" content="#000000" id="meta-theme-color" />
+  <meta name="description" content="Aplikasi tabungan pribadi modern dioptimalkan untuk Samsung Galaxy S21 FE dengan estetika iOS 27 Liquid Glass." />
+  <link id="dynamic-manifest" rel="manifest" />
+
   <style>
-    :root {
-      --bg: #000000;
-      --surface: rgba(24, 26, 32, 0.72);
-      --surface-2: rgba(38, 42, 52, 0.78);
-      --border: rgba(255, 255, 255, 0.13);
-      --text: #F8FAFC;
-      --muted: #94A3B8;
-      --accent: #3B82F6;
-      --success: #10B981;
-      --danger: #F43F5E;
-      --spring: cubic-bezier(0.22, 1.28, 0.36, 1);
-      --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
-      --shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-    }
-
-    [data-theme="light"] {
-      --bg: #F2F4F8;
-      --surface: rgba(255, 255, 255, 0.76);
-      --surface-2: rgba(241, 245, 249, 0.88);
-      --border: rgba(15, 23, 42, 0.09);
-      --text: #0F172A;
-      --muted: #64748B;
-      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.85);
-    }
-
-    * {
+    /* ==========================================================================
+       1. RESET & SYSTEM TYPOGRAPHY (ZERO EXTERNAL DEPENDENCIES)
+       ========================================================================== */
+    *, *::before, *::after {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
     }
 
     html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-      min-height: 100dvh;
-      overflow-x: hidden;
-      transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
+      width: 100%;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overscroll-behavior-y: none;
+      overflow: hidden;
+      background-color: #000000;
+      color: #FFFFFF;
+    }
+
+    button, input {
+      font-family: inherit;
+      color: inherit;
+      border: none;
+      background: none;
+      outline: none;
+    }
+
+    button {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* ==========================================================================
+       2. DESIGN TOKENS (TRUE AMOLED DARK & LIQUID GLASS LIGHT)
+       ========================================================================== */
+    :root {
+      --bg-canvas: #F2F4F8;
+      --bg-glass-card: rgba(255, 255, 255, 0.82);
+      --bg-glass-elevated: rgba(118, 118, 128, 0.12);
+      --bg-glass-chrome: rgba(255, 255, 255, 0.84);
+      --bg-sheet: rgba(255, 255, 255, 0.96);
+
+      --ios-blue: #007AFF;
+      --ios-blue-soft: rgba(0, 122, 255, 0.13);
+      --ios-green: #34C759;
+      --ios-green-soft: rgba(52, 199, 89, 0.14);
+      --ios-indigo: #5856D6;
+      --ios-orange: #FF9500;
+      --ios-pink: #FF2D55;
+      --ios-red: #FF3B30;
+      --ios-red-soft: rgba(255, 59, 48, 0.13);
+
+      --text-primary: #0F172A;
+      --text-secondary: rgba(51, 65, 85, 0.72);
+      --text-tertiary: rgba(71, 85, 105, 0.45);
+      --separator-hairline: rgba(15, 23, 42, 0.08);
+
+      --glass-border: rgba(255, 255, 255, 0.9);
+      --glass-outer-ring: rgba(15, 23, 42, 0.07);
+      --glass-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.95), inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+      --shadow-glass: 0 10px 28px -8px rgba(15, 23, 42, 0.08), 0 2px 8px -2px rgba(15, 23, 42, 0.04);
+      --shadow-floating: 0 18px 40px -10px rgba(15, 23, 42, 0.16), 0 4px 14px -2px rgba(15, 23, 42, 0.06);
+
+      --spring-ios: cubic-bezier(0.22, 1, 0.36, 1);
+      --spring-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --spring-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    html.dark {
+      --bg-canvas: #000000;
+      --bg-glass-card: rgba(22, 22, 26, 0.76);
+      --bg-glass-elevated: rgba(118, 118, 128, 0.22);
+      --bg-glass-chrome: rgba(20, 20, 24, 0.82);
+      --bg-sheet: rgba(20, 20, 24, 0.95);
+
+      --ios-blue: #0A84FF;
+      --ios-blue-soft: rgba(10, 132, 255, 0.18);
+      --ios-green: #30D158;
+      --ios-green-soft: rgba(48, 209, 88, 0.17);
+      --ios-indigo: #5E5CE6;
+      --ios-orange: #FF9F0A;
+      --ios-pink: #FF375F;
+      --ios-red: #FF453A;
+      --ios-red-soft: rgba(255, 69, 58, 0.18);
+
+      --text-primary: #FFFFFF;
+      --text-secondary: rgba(235, 235, 245, 0.68);
+      --text-tertiary: rgba(235, 235, 245, 0.38);
+      --separator-hairline: rgba(255, 255, 255, 0.11);
+
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-outer-ring: rgba(255, 255, 255, 0.12);
+      --glass-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+      --shadow-glass: 0 14px 34px -10px rgba(0, 0, 0, 0.75), 0 2px 10px -2px rgba(0, 0, 0, 0.55);
+      --shadow-floating: 0 22px 48px -10px rgba(0, 0, 0, 0.88), 0 6px 18px -2px rgba(0, 0, 0, 0.65);
+    }
+
+    /* ==========================================================================
+       3. GALAXY S21 FE VIEWPORT SHELL (360px - 412px, 19.5:9)
+       ========================================================================== */
+    .desktop-stage {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(10, 132, 255, 0.14), transparent 45%),
+        radial-gradient(circle at 80% 85%, rgba(94, 92, 230, 0.12), transparent 45%),
+        #070709;
+    }
+
+    html:not(.dark) .desktop-stage {
+      background:
+        radial-gradient(circle at 20% 15%, rgba(0, 122, 255, 0.11), transparent 45%),
+        radial-gradient(circle at 80% 85%, rgba(88, 86, 214, 0.09), transparent 45%),
+        #E4E8F0;
     }
 
     .app-shell {
-      max-width: 430px;
-      margin: 0 auto;
-      min-height: 100dvh;
-      padding: calc(env(safe-area-inset-top, 12px) + 12px) 16px calc(env(safe-area-inset-bottom, 16px) + 104px);
       position: relative;
-    }
-
-    /* Liquid Glass Surface */
-    .glass {
-      background: var(--surface);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-    }
-
-    .pressable {
-      transition: transform 0.28s var(--spring), background-color 0.25s var(--ease), opacity 0.2s var(--ease);
-    }
-
-    .pressable:active {
-      transform: scale(0.96);
-    }
-
-    /* Top Header */
-    .top-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      padding: 8px 4px;
-      border-radius: 24px;
-      transition: background 0.3s var(--ease), padding 0.3s var(--ease);
-    }
-
-    .top-header.scrolled {
-      background: var(--surface);
-      backdrop-filter: blur(22px) saturate(180%);
-      -webkit-backdrop-filter: blur(22px) saturate(180%);
-      border: 1px solid var(--border);
-      padding: 8px 12px;
-      box-shadow: var(--shadow);
-    }
-
-    .brand-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-logo {
-      width: 34px;
-      height: 34px;
-      border-radius: 11px;
-      object-fit: cover;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
-    }
-
-    .large-title {
-      font-size: 30px;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin: 0;
-      line-height: 1.1;
-      transition: font-size 0.25s var(--ease);
-    }
-
-    .top-header.scrolled .large-title {
-      font-size: 20px;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .icon-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      color: var(--text);
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-    }
-
-    /* Total Balance Hero Card */
-    .hero-card {
-      border-radius: 28px;
-      padding: 22px;
-      position: relative;
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
       overflow: hidden;
-      margin-bottom: 18px;
-    }
-
-    .hero-glow {
-      position: absolute;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      filter: blur(55px);
-      opacity: 0.34;
-      pointer-events: none;
-      top: -60px;
-      right: -40px;
-      background: radial-gradient(circle, #3B82F6, #10B981);
-    }
-
-    .hero-label {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
-
-    .hero-amount {
-      font-size: clamp(26px, 7.5vw, 34px);
-      font-weight: 750;
-      letter-spacing: -0.03em;
-      margin: 0 0 14px;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .hero-meta {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .pill-stat {
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    .pill-stat strong {
-      color: var(--text);
-    }
-
-    /* Section Title */
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 4px 2px 12px;
-    }
-
-    .section-title {
-      font-size: 16px;
-      font-weight: 650;
-      letter-spacing: -0.01em;
-      margin: 0;
-    }
-
-    .section-sub {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    /* Pocket Cards */
-    .pocket-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      transition: background-color 0.35s var(--spring-ios), color 0.35s var(--spring-ios);
     }
 
-    .pocket-card {
+    @media (min-width: 500px) {
+      .app-shell {
+        width: 412px;
+        height: 892px;
+        max-height: 95vh;
+        border-radius: 42px;
+        box-shadow:
+          0 0 0 1px var(--glass-outer-ring),
+          0 36px 90px -18px rgba(0, 0, 0, 0.72),
+          0 14px 36px -10px rgba(0, 0, 0, 0.38);
+      }
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ==========================================================================
+       4. LIQUID GLASS SURFACES & SPRING ANIMATIONS
+       ========================================================================== */
+    .liquid-glass {
+      background: var(--bg-glass-card);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
       border-radius: 28px;
-      padding: 18px;
-      animation: cardIn 0.45s var(--spring) both;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--glass-specular), var(--shadow-glass);
+      transition:
+        transform 0.35s var(--spring-ios),
+        background-color 0.35s var(--spring-ios),
+        box-shadow 0.35s var(--spring-ios);
     }
 
-    @keyframes cardIn {
+    html:not(.dark) .liquid-glass {
+      border-color: rgba(15, 23, 42, 0.07);
+    }
+
+    .liquid-glass-pill {
+      background: var(--bg-glass-chrome);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--glass-specular), var(--shadow-floating);
+    }
+
+    html:not(.dark) .liquid-glass-pill {
+      border-color: rgba(15, 23, 42, 0.08);
+    }
+
+    .ios-fill {
+      background-color: var(--bg-glass-elevated);
+    }
+
+    .ios-press {
+      transition: transform 0.32s var(--spring-ios), opacity 0.2s ease, background-color 0.25s ease;
+    }
+    .ios-press:active {
+      transform: scale(0.965);
+    }
+
+    .ios-press-sm {
+      transition: transform 0.28s var(--spring-overshoot), background-color 0.2s ease;
+    }
+    .ios-press-sm:active {
+      transform: scale(0.92);
+    }
+
+    .progress-fill {
+      transition: width 0.75s var(--spring-ios);
+    }
+
+    @keyframes cardSpringIn {
       from {
         opacity: 0;
         transform: translateY(14px) scale(0.98);
@@ -254,1245 +238,2346 @@
       }
     }
 
-    .pocket-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
+    .animate-ios-card {
+      animation: cardSpringIn 0.48s var(--spring-ios) both;
     }
 
-    .pocket-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .pocket-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .pocket-name {
-      font-size: 16px;
-      font-weight: 650;
-      margin: 0 0 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .pocket-target {
-      font-size: 12px;
-      color: var(--muted);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .pocket-pct {
-      font-size: 14px;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      flex-shrink: 0;
-    }
-
-    .pocket-balance {
-      font-size: 21px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 10px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .progress-track {
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.2);
-      overflow: hidden;
-      margin-bottom: 14px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.65s var(--spring);
-    }
-
-    .pocket-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 8px;
-    }
-
-    .btn-action {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 10px 12px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      color: var(--text);
-      background: var(--surface-2);
-    }
-
-    .btn-deposit {
-      background: rgba(16, 185, 129, 0.16);
-      border-color: rgba(16, 185, 129, 0.35);
-      color: #34D399;
-    }
-
-    [data-theme="light"] .btn-deposit {
-      color: #047857;
-    }
-
-    .btn-withdraw {
-      background: rgba(244, 63, 94, 0.14);
-      border-color: rgba(244, 63, 94, 0.3);
-      color: #FB7185;
-    }
-
-    [data-theme="light"] .btn-withdraw {
-      color: #BE123C;
-    }
-
-    /* Stats View */
-    .stats-card {
-      border-radius: 28px;
-      padding: 18px;
-      margin-bottom: 14px;
-    }
-
-    .donut-wrap {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .legend-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 12px;
-    }
-
-    .legend-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .legend-label {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .bars-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-      align-items: end;
-      height: 145px;
-      padding-top: 12px;
-    }
-
-    .bar-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      height: 100%;
-      justify-content: flex-end;
-    }
-
-    .bar-pair {
-      display: flex;
-      align-items: flex-end;
-      gap: 3px;
-      height: 105px;
-      width: 100%;
-      justify-content: center;
-    }
-
-    .bar-in, .bar-out {
-      width: 8px;
-      border-radius: 6px 6px 2px 2px;
-      min-height: 3px;
-      transition: height 0.55s var(--spring);
-    }
-
-    .bar-in { background: var(--success); }
-    .bar-out { background: var(--danger); }
-
-    .bar-month {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .perf-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-
-    .perf-item {
-      border-radius: 20px;
-      padding: 14px 16px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* History View */
-    .filter-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-      overflow-x: auto;
-      padding-bottom: 2px;
-    }
-
-    .search-box {
-      width: 100%;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      padding: 11px 14px;
-      font-size: 14px;
-      outline: none;
-      margin-bottom: 10px;
-    }
-
-    .chip-btn {
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--muted);
-      padding: 7px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .chip-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #FFFFFF;
-    }
-
-    .grouped-list {
-      border-radius: 24px;
+    /* ==========================================================================
+       5. HERO CARD MESH AURA
+       ========================================================================== */
+    .hero-mesh-card {
+      position: relative;
       overflow: hidden;
     }
 
-    .tx-row {
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      border-bottom: 1px solid var(--border);
+    .hero-mesh-aura {
+      position: absolute;
+      inset: -35%;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(10, 132, 255, 0.30), transparent 52%),
+        radial-gradient(circle at 86% 26%, rgba(94, 92, 230, 0.26), transparent 50%),
+        radial-gradient(circle at 52% 92%, rgba(48, 209, 88, 0.20), transparent 52%);
+      filter: blur(22px);
+      animation: meshDrift 11s ease-in-out infinite alternate;
     }
 
-    .tx-row:last-child {
-      border-bottom: none;
+    html:not(.dark) .hero-mesh-aura {
+      background:
+        radial-gradient(circle at 18% 22%, rgba(0, 122, 255, 0.18), transparent 52%),
+        radial-gradient(circle at 86% 26%, rgba(88, 86, 214, 0.15), transparent 50%),
+        radial-gradient(circle at 52% 92%, rgba(52, 199, 89, 0.14), transparent 52%);
     }
 
-    .tx-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin: 0 0 2px;
+    @keyframes meshDrift {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      100% { transform: translate3d(10px, -8px, 0) scale(1.06); }
     }
 
-    .tx-sub {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .tx-amt {
-      font-size: 14px;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    /* Floating Glass Pill Tab Bar + FAB */
-    .dock-wrap {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: calc(env(safe-area-inset-bottom, 12px) + 12px);
+    /* ==========================================================================
+       6. FLOATING LIQUID GLASS TOAST (CLEAN TOP AREA, NO DYNAMIC ISLAND)
+       ========================================================================== */
+    .glass-toast-wrap {
+      position: absolute;
+      top: max(12px, env(safe-area-inset-top));
+      left: 16px;
+      right: 16px;
+      z-index: 70;
       display: flex;
       justify-content: center;
-      z-index: 30;
-      padding: 0 16px;
       pointer-events: none;
     }
 
-    .dock-inner {
+    .glass-toast {
+      width: 100%;
+      max-width: 380px;
+      background: var(--bg-glass-chrome);
+      backdrop-filter: blur(28px) saturate(195%);
+      -webkit-backdrop-filter: blur(28px) saturate(195%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: var(--glass-specular), var(--shadow-floating);
+      border-radius: 24px;
+      padding: 11px 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      max-width: 400px;
-      width: 100%;
       justify-content: space-between;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(-28px) scale(0.94);
+      pointer-events: none;
+      transition:
+        transform 0.48s var(--spring-overshoot),
+        opacity 0.32s var(--spring-ios);
+      cursor: pointer;
+    }
+
+    .glass-toast.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
       pointer-events: auto;
     }
 
-    .pill-nav {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      padding: 5px;
-      border-radius: 999px;
+    .glass-toast:active {
+      transform: scale(0.97);
     }
 
-    .nav-item {
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      padding: 9px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
+    /* ==========================================================================
+       7. STICKY COLLAPSED HEADER & SCROLL VIEWPORT
+       ========================================================================== */
+    .collapsed-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: calc(62px + env(safe-area-inset-top));
+      padding-top: env(safe-area-inset-top);
+      padding-left: 16px;
+      padding-right: 16px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 5px;
-      transition: background 0.25s var(--ease), color 0.25s var(--ease), transform 0.25s var(--spring);
+      justify-content: space-between;
+      z-index: 30;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-6px);
     }
 
-    .nav-item.active {
-      background: var(--accent);
-      color: #FFFFFF;
-      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+    .scroll-viewport {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: calc(106px + env(safe-area-inset-bottom));
     }
 
-    .fab-btn {
-      width: 52px;
-      height: 52px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      background: var(--accent);
-      color: #FFFFFF;
-      font-size: 24px;
-      font-weight: 500;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      box-shadow: 0 12px 26px rgba(59, 130, 246, 0.42);
+    .scroll-viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .large-header {
+      padding-top: max(18px, calc(env(safe-area-inset-top) + 12px));
+      padding-left: 16px;
+      padding-right: 16px;
+      padding-bottom: 12px;
+      user-select: none;
+      will-change: transform, opacity;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .date-kicker {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+    }
+
+    .large-title {
+      font-size: 33px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    .icon-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       flex-shrink: 0;
     }
 
-    /* Bottom Sheet Modal */
-    .sheet-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      backdrop-filter: blur(6px);
-      z-index: 50;
-      display: none;
-      align-items: flex-end;
+    .glass-circle-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
       justify-content: center;
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================================
+       8. VIEWS & LAYOUT HELPERS
+       ========================================================================== */
+    .tab-view {
+      display: none;
+      padding: 0 16px;
+    }
+
+    .tab-view.active {
+      display: block;
+    }
+
+    .stack-16 > * + * {
+      margin-top: 16px;
+    }
+
+    .stack-14 > * + * {
+      margin-top: 14px;
+    }
+
+    .stack-12 > * + * {
+      margin-top: 12px;
+    }
+
+    .card-pad {
+      padding: 20px;
+    }
+
+    .card-pad-sm {
+      padding: 16px;
+    }
+
+    /* ==========================================================================
+       9. FLOATING GLASS PILL TAB BAR + '+' BUTTON
+       ========================================================================== */
+    .bottom-dock {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: max(16px, env(safe-area-inset-bottom));
+      z-index: 35;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pill-nav {
+      position: relative;
+      flex: 1;
+      height: 60px;
+      border-radius: 999px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+    }
+
+    .tab-pill-slider {
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      left: 6px;
+      width: calc((100% - 12px) / 3);
+      border-radius: 999px;
+      background: var(--ios-blue-soft);
+      border: 1px solid rgba(10, 132, 255, 0.24);
+      transition: transform 0.44s var(--spring-ios);
+      pointer-events: none;
+    }
+
+    .nav-tab-btn {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      color: var(--text-secondary);
+      transition: color 0.25s ease, transform 0.25s var(--spring-ios);
+    }
+
+    .nav-tab-btn.active {
+      color: var(--ios-blue);
+    }
+
+    .nav-tab-btn span {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .fab-add-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .fab-add-inner {
+      width: 48px;
+      height: 48px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--ios-blue), var(--ios-indigo));
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(10, 132, 255, 0.38);
+    }
+
+    /* ==========================================================================
+       10. BOTTOM SHEETS (SPRING MODAL)
+       ========================================================================== */
+    .sheet-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.54);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       opacity: 0;
-      transition: opacity 0.25s var(--ease);
+      pointer-events: none;
+      transition: opacity 0.32s var(--spring-ios);
+      z-index: 45;
     }
 
     .sheet-backdrop.open {
-      display: flex;
       opacity: 1;
+      pointer-events: auto;
     }
 
-    .sheet-panel {
-      width: 100%;
-      max-width: 430px;
-      border-radius: 32px 32px 0 0;
-      padding: 14px 18px calc(env(safe-area-inset-bottom, 16px) + 22px);
-      transform: translateY(100%);
-      transition: transform 0.42s var(--spring);
-      max-height: 88dvh;
-      overflow-y: auto;
+    .ios-bottom-sheet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      max-height: 90%;
+      background: var(--bg-sheet);
+      backdrop-filter: blur(32px) saturate(200%);
+      -webkit-backdrop-filter: blur(32px) saturate(200%);
+      border-top-left-radius: 32px;
+      border-top-right-radius: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: var(--glass-specular), 0 -16px 48px rgba(0, 0, 0, 0.45);
+      transform: translate3d(0, 105%, 0);
+      transition: transform 0.48s var(--spring-sheet);
+      z-index: 55;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
     }
 
-    .sheet-backdrop.open .sheet-panel {
-      transform: translateY(0);
+    .ios-bottom-sheet.open {
+      transform: translate3d(0, 0, 0);
     }
 
-    .sheet-handle {
-      width: 40px;
+    .sheet-grabber-wrap {
+      padding: 10px 0 8px;
+      display: flex;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .sheet-grabber {
+      width: 36px;
       height: 5px;
       border-radius: 999px;
-      background: rgba(148, 163, 184, 0.45);
-      margin: 0 auto 14px;
+      background-color: var(--text-tertiary);
     }
 
-    .sheet-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin: 0 0 14px;
+    .sheet-scroll {
+      padding: 0 20px 24px;
+      overflow-y: auto;
+      scrollbar-width: none;
     }
 
-    .form-group {
-      margin-bottom: 13px;
+    .sheet-scroll::-webkit-scrollbar {
+      display: none;
     }
 
-    .form-label {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .form-input {
+    /* ==========================================================================
+       11. FORM INPUTS, CHIPS & BUTTONS
+       ========================================================================== */
+    .ios-input-box {
       width: 100%;
+      height: 48px;
       border-radius: 16px;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text);
-      padding: 12px 14px;
-      font-size: 15px;
-      outline: none;
+      padding: 0 14px;
+      background-color: var(--bg-glass-elevated);
+      border: 1px solid transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: border-color 0.2s ease, background-color 0.2s ease;
     }
 
-    .quick-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-top: 8px;
+    .ios-input-box:focus {
+      border-color: var(--ios-blue);
     }
 
-    .q-chip {
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text);
+    .ios-input-box::placeholder {
+      color: var(--text-tertiary);
+      font-weight: 500;
+    }
+
+    .primary-cta-btn {
+      width: 100%;
+      height: 50px;
       border-radius: 999px;
-      padding: 6px 11px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .pocket-picker {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-
-    .pick-pill {
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--text);
-      border-radius: 16px;
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .pick-pill.selected {
-      border-color: var(--accent);
-      background: rgba(59, 130, 246, 0.2);
-    }
-
-    .color-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .color-dot {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      cursor: pointer;
-    }
-
-    .color-dot.selected {
-      border-color: #FFFFFF;
-      box-shadow: 0 0 0 2px var(--accent);
-      transform: scale(1.08);
-    }
-
-    .btn-primary {
-      width: 100%;
-      border: none;
-      border-radius: 18px;
-      padding: 13px 16px;
-      font-size: 15px;
-      font-weight: 700;
+      background: linear-gradient(135deg, var(--ios-blue), var(--ios-indigo));
       color: #FFFFFF;
-      background: var(--accent);
-      cursor: pointer;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px rgba(10, 132, 255, 0.34);
     }
 
-    .btn-danger-ghost {
+    .danger-cta-btn {
       width: 100%;
-      border: 1px solid rgba(244, 63, 94, 0.35);
-      background: rgba(244, 63, 94, 0.12);
-      color: #FB7185;
-      border-radius: 18px;
-      padding: 11px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-
-    /* Floating Liquid Glass Toast */
-    .toast {
-      position: fixed;
-      top: calc(env(safe-area-inset-top, 12px) + 12px);
-      left: 50%;
-      transform: translate(-50%, -140%);
-      z-index: 80;
-      padding: 11px 18px;
+      height: 50px;
       border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
-      max-width: 92vw;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: transform 0.45s var(--spring);
-      pointer-events: none;
+      background: linear-gradient(135deg, var(--ios-red), #D70015);
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px rgba(255, 69, 58, 0.32);
     }
 
-    .toast.show {
-      transform: translate(-50%, 0);
-    }
-
-    #confettiCanvas {
-      position: fixed;
+    /* ==========================================================================
+       12. CONFETTI CANVAS
+       ========================================================================== */
+    #confetti-canvas {
+      position: absolute;
       inset: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
-      z-index: 70;
+      z-index: 80;
     }
   </style>
 </head>
 <body>
-  <canvas id="confettiCanvas"></canvas>
-  <div id="toast" class="toast glass"></div>
+  <div class="desktop-stage">
+    <main class="app-shell" id="app-shell">
+      <!-- Celebration Confetti Canvas -->
+      <canvas id="confetti-canvas"></canvas>
 
-  <div class="app-shell">
-    <header id="topHeader" class="top-header">
-      <div class="brand-row">
-        <img src="./icons/icon-192.png" alt="Logo SakuOne" class="brand-logo" />
-        <h1 class="large-title">Tabungan</h1>
-      </div>
-      <div class="header-actions">
-        <button id="privacyBtn" class="icon-btn pressable" aria-label="Sembunyikan saldo" title="Privasi Saldo">
-          <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-        </button>
-        <button id="themeBtn" class="icon-btn pressable" aria-label="Ganti tema" title="Mode Terang/Gelap">
-          <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"/>
-            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-          </svg>
-        </button>
-      </div>
-    </header>
-
-    <main id="viewContainer"></main>
-  </div>
-
-  <!-- Floating Glass Pill Tab Bar + FAB -->
-  <nav class="dock-wrap" aria-label="Navigasi utama">
-    <div class="dock-inner">
-      <div class="pill-nav glass">
-        <button class="nav-item active" data-tab="pockets">Kantong</button>
-        <button class="nav-item" data-tab="stats">Statistik</button>
-        <button class="nav-item" data-tab="history">Riwayat</button>
-      </div>
-      <button id="fabAddPocket" class="fab-btn pressable" aria-label="Tambah kantong baru">+</button>
-    </div>
-  </nav>
-
-  <!-- Sheet: Setor / Tarik -->
-  <div id="txSheet" class="sheet-backdrop" role="dialog" aria-modal="true">
-    <div class="sheet-panel glass">
-      <div class="sheet-handle"></div>
-      <h2 id="txSheetTitle" class="sheet-title">Setor Tabungan</h2>
-      <div class="form-group">
-        <label class="form-label">Pilih Kantong</label>
-        <div id="txPocketPicker" class="pocket-picker"></div>
-      </div>
-      <div class="form-group">
-        <label for="txAmountInput" class="form-label">Nominal (Rp)</label>
-        <input id="txAmountInput" type="number" inputmode="numeric" class="form-input" placeholder="Contoh: 100000" />
-        <div class="quick-chips">
-          <button type="button" class="q-chip" data-add="50000">+50rb</button>
-          <button type="button" class="q-chip" data-add="100000">+100rb</button>
-          <button type="button" class="q-chip" data-add="250000">+250rb</button>
-          <button type="button" class="q-chip" data-add="500000">+500rb</button>
-          <button type="button" class="q-chip" data-add="1000000">+1jt</button>
+      <!-- =====================================================================
+           FLOATING LIQUID GLASS TOAST (CLEAN TOP SAFE AREA)
+           ===================================================================== -->
+      <div class="glass-toast-wrap" role="status" aria-live="polite">
+        <div id="glass-toast" class="glass-toast" onclick="dismissGlassToast()">
+          <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+            <div id="toast-icon-box"
+                 style="width: 34px; height: 34px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; background-color: var(--ios-green-soft); color: var(--ios-green);">
+              ✓
+            </div>
+            <div style="min-width: 0;">
+              <p id="toast-title" style="font-size: 13px; font-weight: 800; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Setoran Berhasil
+              </p>
+              <p id="toast-subtitle" style="font-size: 11px; font-weight: 500; color: var(--text-secondary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Dana Darurat bertambah
+              </p>
+            </div>
+          </div>
+          <span id="toast-badge"
+                class="tabular-nums"
+                style="padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; flex-shrink: 0; background-color: var(--ios-blue-soft); color: var(--ios-blue);">
+            +Rp 500rb
+          </span>
         </div>
       </div>
-      <div class="form-group">
-        <label for="txNoteInput" class="form-label">Catatan (Opsional)</label>
-        <input id="txNoteInput" type="text" class="form-input" placeholder="Misal: Gaji mingguan / sisa belanja" />
-      </div>
-      <button id="txSubmitBtn" type="button" class="btn-primary pressable">Simpan Transaksi</button>
-    </div>
-  </div>
 
-  <!-- Sheet: Tambah / Edit Kantong -->
-  <div id="pocketSheet" class="sheet-backdrop" role="dialog" aria-modal="true">
-    <div class="sheet-panel glass">
-      <div class="sheet-handle"></div>
-      <h2 id="pocketSheetTitle" class="sheet-title">Kantong Baru</h2>
-      <div class="form-group">
-        <label for="pocketNameInput" class="form-label">Nama Kantong</label>
-        <input id="pocketNameInput" type="text" class="form-input" placeholder="Contoh: Dana Darurat" />
+      <!-- =====================================================================
+           STICKY FROSTED GLASS HEADER (COLLAPSED ON SCROLL)
+           ===================================================================== -->
+      <header id="collapsed-header" class="liquid-glass-pill collapsed-header">
+        <div style="width: 84px;"></div>
+
+        <div style="text-align: center; min-width: 0;">
+          <p style="font-size: 15px; font-weight: 800; letter-spacing: -0.02em; line-height: 1;">Tabungan</p>
+          <p id="collapsed-balance" class="tabular-nums" style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            Rp 28.700.000
+          </p>
+        </div>
+
+        <div class="icon-btn-group" style="width: 84px; justify-content: flex-end;">
+          <button type="button" onclick="togglePrivacyMode()" aria-label="Sembunyikan atau Tampilkan Saldo" class="liquid-glass-pill glass-circle-btn ios-press-sm">
+            <svg class="eye-icon-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <svg class="eye-icon-closed hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+              <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+              <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+              <line x1="2" y1="2" x2="22" y2="22"/>
+            </svg>
+          </button>
+
+          <button type="button" onclick="toggleTheme()" aria-label="Ganti Tema Gelap atau Terang" class="liquid-glass-pill glass-circle-btn ios-press-sm">
+            <svg class="theme-sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+            </svg>
+            <svg class="theme-moon-icon hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- =====================================================================
+           MAIN SCROLLABLE VIEWPORT
+           ===================================================================== -->
+      <div id="main-scroll" class="scroll-viewport">
+        <!-- COLLAPSIBLE LARGE TITLE HEADER ('Tabungan') -->
+        <section id="expanded-hero-header" class="large-header">
+          <div class="header-row">
+            <div>
+              <p id="ios-date-kicker" class="date-kicker">Sabtu, 21 Nov</p>
+              <h1 class="large-title">Tabungan</h1>
+            </div>
+
+            <div class="icon-btn-group">
+              <button type="button" onclick="togglePrivacyMode()" aria-label="Sembunyikan atau Tampilkan Saldo" class="liquid-glass-pill glass-circle-btn ios-press-sm">
+                <svg class="eye-icon-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <svg class="eye-icon-closed hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                  <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                  <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                  <line x1="2" y1="2" x2="22" y2="22"/>
+                </svg>
+              </button>
+
+              <button type="button" onclick="toggleTheme()" aria-label="Ganti Tema Gelap atau Terang" class="liquid-glass-pill glass-circle-btn ios-press-sm">
+                <svg class="theme-sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="4"/>
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                </svg>
+                <svg class="theme-moon-icon hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 1: KANTONG
+             =================================================================== -->
+        <div id="view-kantong" class="tab-view active stack-16">
+          <!-- Hero Total Tabungan Card with Mesh Aura -->
+          <div class="liquid-glass hero-mesh-card card-pad">
+            <div class="hero-mesh-aura"></div>
+            <div style="position: relative; z-index: 2;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary);">
+                  Total Tabungan
+                </span>
+                <span id="hero-progress-badge"
+                      class="tabular-nums"
+                      style="padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; background-color: var(--ios-green-soft); color: var(--ios-green);">
+                  ▲ 53,6%
+                </span>
+              </div>
+
+              <h2 id="hero-total-balance"
+                  class="tabular-nums"
+                  style="font-size: clamp(28px, 8vw, 35px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; margin-top: 6px;">
+                Rp 28.700.000
+              </h2>
+
+              <p id="hero-target-subtitle"
+                 class="tabular-nums"
+                 style="font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Terkumpul dari total target Rp 53.500.000
+              </p>
+
+              <!-- Overall Accumulation Progress Bar -->
+              <div class="ios-fill" style="width: 100%; height: 8px; border-radius: 999px; overflow: hidden; margin-top: 14px;">
+                <div id="hero-overall-bar"
+                     class="progress-fill"
+                     style="height: 100%; width: 53.6%; border-radius: 999px; background: linear-gradient(90deg, var(--ios-blue), var(--ios-green));">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Header -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 2px 4px 0;">
+            <h3 style="font-size: 17px; font-weight: 800; letter-spacing: -0.02em;">Kantong Saya</h3>
+            <span id="pocket-count-label" style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">
+              4 Kantong
+            </span>
+          </div>
+
+          <!-- Pocket Cards List -->
+          <div id="pockets-container" class="stack-14"></div>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 2: STATISTIK
+             =================================================================== -->
+        <div id="view-statistik" class="tab-view stack-16">
+          <!-- Interactive SVG Donut Allocation Card -->
+          <div class="liquid-glass card-pad">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <div>
+                <h3 style="font-size: 17px; font-weight: 800; letter-spacing: -0.02em;">Alokasi Kantong</h3>
+                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Proporsi dana tiap target tabungan</p>
+              </div>
+              <span style="padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; background-color: var(--ios-blue-soft); color: var(--ios-blue);">
+                Real-time
+              </span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div style="position: relative; width: 126px; height: 126px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                <svg id="donut-svg" width="126" height="126" viewBox="0 0 132 132" style="transform: rotate(-90deg);"></svg>
+                <div style="position: absolute; text-align: center; pointer-events: none; padding: 0 8px;">
+                  <span style="display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Total</span>
+                  <span id="donut-center-label" class="tabular-nums" style="display: block; font-size: 13px; font-weight: 800; margin-top: 2px;">Rp 28,7jt</span>
+                </div>
+              </div>
+
+              <div id="donut-legend" class="stack-12" style="flex: 1; min-width: 0;"></div>
+            </div>
+          </div>
+
+          <!-- Monthly Deposit vs Withdraw Bar Chart -->
+          <div class="liquid-glass card-pad">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px;">
+              <h3 style="font-size: 17px; font-weight: 800; letter-spacing: -0.02em;">Tren Bulanan</h3>
+              <div style="display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700;">
+                <span style="display: inline-flex; align-items: center; gap: 5px; color: var(--ios-green);">
+                  <span style="width: 8px; height: 8px; border-radius: 999px; background-color: var(--ios-green);"></span>
+                  Setor
+                </span>
+                <span style="display: inline-flex; align-items: center; gap: 5px; color: var(--ios-red);">
+                  <span style="width: 8px; height: 8px; border-radius: 999px; background-color: var(--ios-red);"></span>
+                  Tarik
+                </span>
+              </div>
+            </div>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px;">Perbandingan setoran vs penarikan 6 bulan</p>
+
+            <div id="monthly-bars-container" style="height: 155px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding-top: 18px;"></div>
+          </div>
+
+          <!-- Inset Grouped Performance Summary -->
+          <div>
+            <p style="padding: 0 4px 8px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary);">
+              Ringkasan Performa
+            </p>
+            <div id="insights-list" class="liquid-glass" style="overflow: hidden;"></div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 3: RIWAYAT (IOS INSET GROUPED LIST)
+             =================================================================== -->
+        <div id="view-riwayat" class="tab-view stack-16">
+          <!-- Search Box -->
+          <div style="position: relative;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                 style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); pointer-events: none;">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input id="history-search" type="text" oninput="renderHistory()" placeholder="Cari kantong atau catatan transaksi..."
+                   class="ios-input-box" style="padding-left: 40px; border-radius: 999px; height: 44px;" />
+          </div>
+
+          <!-- Segmented Filter Pills -->
+          <div class="ios-fill" style="padding: 4px; border-radius: 999px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+            <button type="button" onclick="setHistoryFilter('all')" data-filter="all" class="history-filter-chip ios-press-sm" style="height: 32px; border-radius: 999px; font-size: 12px; font-weight: 800;">
+              Semua
+            </button>
+            <button type="button" onclick="setHistoryFilter('deposit')" data-filter="deposit" class="history-filter-chip ios-press-sm" style="height: 32px; border-radius: 999px; font-size: 12px; font-weight: 800;">
+              Setoran
+            </button>
+            <button type="button" onclick="setHistoryFilter('withdraw')" data-filter="withdraw" class="history-filter-chip ios-press-sm" style="height: 32px; border-radius: 999px; font-size: 12px; font-weight: 800;">
+              Penarikan
+            </button>
+          </div>
+
+          <!-- Grouped Transactions Container -->
+          <div id="history-list-container" class="stack-16"></div>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="pocketTargetInput" class="form-label">Target Tabungan (Rp)</label>
-        <input id="pocketTargetInput" type="number" inputmode="numeric" class="form-input" placeholder="Contoh: 5000000" />
+
+      <!-- =====================================================================
+           FLOATING GLASS PILL TAB BAR (3 TABS) + DETACHED '+' BUTTON
+           ===================================================================== -->
+      <div class="bottom-dock">
+        <nav aria-label="Navigasi Utama" class="liquid-glass-pill pill-nav">
+          <div id="tab-pill-slider" class="tab-pill-slider"></div>
+
+          <button type="button" onclick="switchTab('kantong', 0)" data-tab="kantong" class="nav-tab-btn active">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/>
+              <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>
+            </svg>
+            <span>Kantong</span>
+          </button>
+
+          <button type="button" onclick="switchTab('statistik', 1)" data-tab="statistik" class="nav-tab-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+              <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+            </svg>
+            <span>Statistik</span>
+          </button>
+
+          <button type="button" onclick="switchTab('riwayat', 2)" data-tab="riwayat" class="nav-tab-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+              <path d="M12 7v5l4 2"/>
+            </svg>
+            <span>Riwayat</span>
+          </button>
+        </nav>
+
+        <button type="button" onclick="openCreatePocketSheet()" aria-label="Buat Kantong Baru" class="liquid-glass-pill fab-add-btn ios-press-sm">
+          <span class="fab-add-inner">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+          </span>
+        </button>
       </div>
-      <div class="form-group">
-        <label for="pocketEmojiInput" class="form-label">Emoji / Ikon</label>
-        <input id="pocketEmojiInput" type="text" maxlength="4" class="form-input" value="💰" />
+
+      <!-- =====================================================================
+           BOTTOM SHEET BACKDROP
+           ===================================================================== -->
+      <div id="sheet-backdrop" class="sheet-backdrop" onclick="closeAllSheets()"></div>
+
+      <!-- =====================================================================
+           BOTTOM SHEET 1: SETOR & TARIK DANA
+           ===================================================================== -->
+      <div id="sheet-pocket-tx" class="ios-bottom-sheet">
+        <div class="sheet-grabber-wrap" onclick="closeAllSheets()">
+          <div class="sheet-grabber"></div>
+        </div>
+
+        <div class="sheet-scroll stack-16">
+          <!-- Horizontal Pocket Selector -->
+          <div>
+            <p style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); margin-bottom: 8px;">
+              Pilih Kantong
+            </p>
+            <div id="tx-pocket-selector" style="display: flex; align-items: center; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;"></div>
+          </div>
+
+          <!-- Selected Pocket Header & Progress Ring -->
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+              <div id="detail-icon-box" style="width: 50px; height: 50px; border-radius: 17px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"></div>
+              <div style="min-width: 0;">
+                <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                  <h3 id="detail-title" style="font-size: 17px; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    Dana Darurat
+                  </h3>
+                  <span id="detail-achieved-badge" class="hidden" style="padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 800; background-color: var(--ios-green-soft); color: var(--ios-green);">
+                    Tercapai
+                  </span>
+                </div>
+                <p id="detail-saved-text" class="tabular-nums" style="font-size: 14px; font-weight: 800; margin-top: 2px;">Rp 11.250.000</p>
+                <p id="detail-target-text" class="tabular-nums" style="font-size: 11px; color: var(--text-secondary); margin-top: 1px;">Target Rp 15.000.000</p>
+              </div>
+            </div>
+
+            <div style="position: relative; width: 56px; height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+              <svg width="56" height="56" viewBox="0 0 56 56" style="transform: rotate(-90deg);">
+                <circle cx="28" cy="28" r="22" fill="none" stroke="var(--bg-glass-elevated)" stroke-width="5"></circle>
+                <circle id="detail-ring-progress" cx="28" cy="28" r="22" fill="none" stroke="#0A84FF" stroke-width="5"
+                        stroke-linecap="round" stroke-dasharray="138.23" stroke-dashoffset="34.5"
+                        style="transition: stroke-dashoffset 0.65s var(--spring-ios), stroke 0.3s ease;"></circle>
+              </svg>
+              <span id="detail-ring-pct" class="tabular-nums" style="position: absolute; font-size: 11px; font-weight: 800;">75%</span>
+            </div>
+          </div>
+
+          <!-- Segmented Control: Setor vs Tarik -->
+          <div class="ios-fill" style="padding: 4px; border-radius: 999px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+            <button type="button" id="mode-deposit-btn" onclick="setTransactionMode('deposit')" class="ios-press-sm" style="height: 36px; border-radius: 999px; font-size: 13px; font-weight: 800;">
+              Setor Dana
+            </button>
+            <button type="button" id="mode-withdraw-btn" onclick="setTransactionMode('withdraw')" class="ios-press-sm" style="height: 36px; border-radius: 999px; font-size: 13px; font-weight: 800;">
+              Tarik Dana
+            </button>
+          </div>
+
+          <!-- 5 Quick Nominal Chips -->
+          <div>
+            <p style="font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px;">Nominal Cepat</p>
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;">
+              <button type="button" onclick="addQuickAmount(50000)" class="ios-fill ios-press-sm tabular-nums" style="height: 36px; border-radius: 12px; font-size: 11px; font-weight: 800;">+50rb</button>
+              <button type="button" onclick="addQuickAmount(100000)" class="ios-fill ios-press-sm tabular-nums" style="height: 36px; border-radius: 12px; font-size: 11px; font-weight: 800;">+100rb</button>
+              <button type="button" onclick="addQuickAmount(250000)" class="ios-fill ios-press-sm tabular-nums" style="height: 36px; border-radius: 12px; font-size: 11px; font-weight: 800;">+250rb</button>
+              <button type="button" onclick="addQuickAmount(500000)" class="ios-fill ios-press-sm tabular-nums" style="height: 36px; border-radius: 12px; font-size: 11px; font-weight: 800;">+500rb</button>
+              <button type="button" onclick="addQuickAmount(1000000)" class="ios-fill ios-press-sm tabular-nums" style="height: 36px; border-radius: 12px; font-size: 11px; font-weight: 800;">+1jt</button>
+            </div>
+          </div>
+
+          <!-- Custom Amount Input -->
+          <div>
+            <label for="tx-amount-input" style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">
+              Nominal Transaksi
+            </label>
+            <div style="position: relative;">
+              <span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 17px; font-weight: 800; color: var(--text-secondary);">
+                Rp
+              </span>
+              <input id="tx-amount-input" type="text" inputmode="numeric" placeholder="0"
+                     oninput="formatCurrencyInput(this)"
+                     class="ios-input-box tabular-nums"
+                     style="height: 54px; padding-left: 48px; font-size: 22px; font-weight: 800;" />
+            </div>
+          </div>
+
+          <!-- Note Input -->
+          <div>
+            <label for="tx-note-input" style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">
+              Catatan (Opsional)
+            </label>
+            <input id="tx-note-input" type="text" placeholder="Contoh: Sisihan gaji mingguan" class="ios-input-box" />
+          </div>
+
+          <!-- Confirm CTA -->
+          <button type="button" id="tx-submit-btn" onclick="submitPocketTransaction()" class="primary-cta-btn ios-press">
+            Konfirmasi Setoran
+          </button>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Warna Aksen AMOLED</label>
-        <div id="colorPicker" class="color-row"></div>
+
+      <!-- =====================================================================
+           BOTTOM SHEET 2: BUAT / EDIT KANTONG TABUNGAN
+           ===================================================================== -->
+      <div id="sheet-pocket-form" class="ios-bottom-sheet">
+        <div class="sheet-grabber-wrap" onclick="closeAllSheets()">
+          <div class="sheet-grabber"></div>
+        </div>
+
+        <div class="sheet-scroll stack-14">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <h3 id="pocket-form-heading" style="font-size: 20px; font-weight: 800; letter-spacing: -0.02em;">Kantong Baru</h3>
+            <button type="button" id="delete-pocket-trigger-btn" onclick="showDeleteConfirmation()" class="hidden ios-press-sm"
+                    style="padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; background-color: var(--ios-red-soft); color: var(--ios-red);">
+              Hapus
+            </button>
+          </div>
+
+          <!-- Inline Delete Confirmation Box -->
+          <div id="delete-confirm-box" class="hidden" style="padding: 14px; border-radius: 20px; background-color: var(--ios-red-soft); border: 1px solid rgba(255, 69, 58, 0.28);">
+            <p style="font-size: 13px; font-weight: 800; color: var(--ios-red);">Hapus kantong ini secara permanen?</p>
+            <p style="font-size: 11px; color: var(--text-secondary); margin-top: 3px;">Saldo di kantong ini akan dikeluarkan dari total tabungan.</p>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 10px;">
+              <button type="button" onclick="confirmDeletePocket()" class="ios-press-sm" style="flex: 1; height: 36px; border-radius: 999px; font-size: 12px; font-weight: 800; background-color: var(--ios-red); color: #FFFFFF;">
+                Ya, Hapus
+              </button>
+              <button type="button" onclick="hideDeleteConfirmation()" class="ios-fill ios-press-sm" style="flex: 1; height: 36px; border-radius: 999px; font-size: 12px; font-weight: 800;">
+                Batal
+              </button>
+            </div>
+          </div>
+
+          <!-- Pocket Name -->
+          <div>
+            <label for="form-pocket-name" style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">
+              Nama Kantong
+            </label>
+            <input id="form-pocket-name" type="text" placeholder="Misal: Dana Nikah, DP Rumah" class="ios-input-box" />
+          </div>
+
+          <!-- Target & Saved Grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <label for="form-pocket-target" style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">
+                Target Dana (Rp)
+              </label>
+              <input id="form-pocket-target" type="text" inputmode="numeric" placeholder="10.000.000"
+                     oninput="formatCurrencyInput(this)" class="ios-input-box tabular-nums" />
+            </div>
+            <div>
+              <label id="form-saved-label" for="form-pocket-saved" style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">
+                Saldo Awal (Rp)
+              </label>
+              <input id="form-pocket-saved" type="text" inputmode="numeric" placeholder="0"
+                     oninput="formatCurrencyInput(this)" class="ios-input-box tabular-nums" />
+            </div>
+          </div>
+
+          <!-- Target Date -->
+          <div>
+            <label for="form-pocket-date" style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">
+              Target Tanggal Tercapai
+            </label>
+            <input id="form-pocket-date" type="date" class="ios-input-box" />
+          </div>
+
+          <!-- Crisp SVG Icon Selector -->
+          <div>
+            <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">
+              Pilih Ikon Kantong
+            </label>
+            <div id="icon-selector-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;"></div>
+          </div>
+
+          <!-- 8 AMOLED Accent Colors -->
+          <div>
+            <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px;">
+              Warna Aksen AMOLED
+            </label>
+            <div id="color-selector-row" style="display: flex; align-items: center; justify-content: space-between; gap: 6px;"></div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="button" id="pocket-form-submit-btn" onclick="savePocketForm()" class="primary-cta-btn ios-press" style="margin-top: 4px;">
+            Simpan Kantong
+          </button>
+        </div>
       </div>
-      <button id="pocketSaveBtn" type="button" class="btn-primary pressable">Simpan Kantong</button>
-      <button id="pocketDeleteBtn" type="button" class="btn-danger-ghost pressable" style="display:none;">Hapus Kantong</button>
-    </div>
+    </main>
   </div>
 
   <script>
-    const STORAGE_KEY = "sakuone_data_v1";
-    const COLORS = ["#3B82F6", "#10B981", "#F59E0B", "#EC4899", "#8B5CF6", "#06B6D4", "#F97316", "#6366F1"];
+    'use strict';
 
-    const DEFAULT_DATA = {
-      hidden: false,
-      theme: "dark",
-      activeTab: "pockets",
+    /* =========================================================================
+       1. CRISP INLINE SVG ICON LIBRARY (ZERO EXTERNAL FONT DEPENDENCIES)
+       ========================================================================= */
+    const ICON_LIBRARY = {
+      shield: {
+        label: 'Darurat',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>'
+      },
+      plane: {
+        label: 'Liburan',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>'
+      },
+      smartphone: {
+        label: 'Gadget',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>'
+      },
+      home: {
+        label: 'Rumah',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'
+      },
+      car: {
+        label: 'Kendaraan',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>'
+      },
+      graduation: {
+        label: 'Pendidikan',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>'
+      },
+      heart: {
+        label: 'Keluarga',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>'
+      },
+      laptop: {
+        label: 'Kerja',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>'
+      },
+      briefcase: {
+        label: 'Bisnis',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>'
+      },
+      bag: {
+        label: 'Belanja',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>'
+      },
+      trending: {
+        label: 'Investasi',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>'
+      },
+      gift: {
+        label: 'Hadiah',
+        svg: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>'
+      }
+    };
+
+    const ICON_KEYS = Object.keys(ICON_LIBRARY);
+
+    const AMOLED_COLORS = [
+      { name: 'Electric Blue', hex: '#0A84FF' },
+      { name: 'Emerald AMOLED', hex: '#30D158' },
+      { name: 'Royal Indigo', hex: '#5E5CE6' },
+      { name: 'Amber Gold', hex: '#FF9F0A' },
+      { name: 'Neon Pink', hex: '#FF375F' },
+      { name: 'Sky Cyan', hex: '#64D2FF' },
+      { name: 'Vivid Violet', hex: '#BF5AF2' },
+      { name: 'Solar Yellow', hex: '#FFD60A' }
+    ];
+
+    function getIconSvg(key) {
+      return (ICON_LIBRARY[key] && ICON_LIBRARY[key].svg) || ICON_LIBRARY.shield.svg;
+    }
+
+    /* =========================================================================
+       2. SEED DATA & SAFE LOCALSTORAGE PERSISTENCE
+       ========================================================================= */
+    const STORAGE_KEY = 'sakuone_s21fe_v2';
+
+    const DEFAULT_STATE = {
+      theme: 'dark',
+      privacyMode: false,
       pockets: [
-        { id: "p1", name: "Dana Darurat", emoji: "🛡️", balance: 3250000, target: 10000000, color: "#10B981" },
-        { id: "p2", name: "Liburan Akhir Tahun", emoji: "✈️", balance: 1800000, target: 3000000, color: "#3B82F6" },
-        { id: "p3", name: "Upgrade Gadget", emoji: "📱", balance: 2400000, target: 4500000, color: "#8B5CF6" },
-        { id: "p4", name: "Tabungan Masa Depan", emoji: "🌱", balance: 5000000, target: 5000000, color: "#F59E0B" }
+        {
+          id: 'pkt-darurat',
+          name: 'Dana Darurat',
+          icon: 'shield',
+          target: 15000000,
+          saved: 11250000,
+          targetDate: '2027-03-31',
+          color: '#0A84FF'
+        },
+        {
+          id: 'pkt-liburan',
+          name: 'Liburan Akhir Tahun',
+          icon: 'plane',
+          target: 5000000,
+          saved: 3400000,
+          targetDate: '2026-12-20',
+          color: '#30D158'
+        },
+        {
+          id: 'pkt-gadget',
+          name: 'Upgrade Gadget',
+          icon: 'smartphone',
+          target: 8500000,
+          saved: 4250000,
+          targetDate: '2027-02-15',
+          color: '#5E5CE6'
+        },
+        {
+          id: 'pkt-masadepan',
+          name: 'Tabungan Masa Depan',
+          icon: 'home',
+          target: 25000000,
+          saved: 9800000,
+          targetDate: '2027-12-31',
+          color: '#FF9F0A'
+        }
       ],
       transactions: [
-        { id: "t1", pocketId: "p1", type: "deposit", amount: 750000, note: "Setoran awal bulan", date: new Date().toISOString() },
-        { id: "t2", pocketId: "p2", type: "deposit", amount: 500000, note: "Tiket & penginapan", date: new Date(Date.now() - 86400000 * 3).toISOString() },
-        { id: "t3", pocketId: "p3", type: "withdraw", amount: 350000, note: "Beli aksesoris pelindung", date: new Date(Date.now() - 86400000 * 7).toISOString() },
-        { id: "t4", pocketId: "p4", type: "deposit", amount: 1500000, note: "Target tercapai", date: new Date(Date.now() - 86400000 * 14).toISOString() }
+        {
+          id: 'tx-101',
+          pocketId: 'pkt-darurat',
+          pocketName: 'Dana Darurat',
+          pocketIcon: 'shield',
+          pocketColor: '#0A84FF',
+          type: 'deposit',
+          amount: 1250000,
+          note: 'Alokasi gaji bulanan',
+          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString()
+        },
+        {
+          id: 'tx-102',
+          pocketId: 'pkt-liburan',
+          pocketName: 'Liburan Akhir Tahun',
+          pocketIcon: 'plane',
+          pocketColor: '#30D158',
+          type: 'deposit',
+          amount: 500000,
+          note: 'Tabungan tiket & hotel',
+          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString()
+        },
+        {
+          id: 'tx-103',
+          pocketId: 'pkt-gadget',
+          pocketName: 'Upgrade Gadget',
+          pocketIcon: 'smartphone',
+          pocketColor: '#5E5CE6',
+          type: 'deposit',
+          amount: 750000,
+          note: 'Bonus proyek desain',
+          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 54).toISOString()
+        },
+        {
+          id: 'tx-104',
+          pocketId: 'pkt-liburan',
+          pocketName: 'Liburan Akhir Tahun',
+          pocketIcon: 'plane',
+          pocketColor: '#30D158',
+          type: 'withdraw',
+          amount: 200000,
+          note: 'DP sewa kendaraan wisata',
+          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 96).toISOString()
+        },
+        {
+          id: 'tx-105',
+          pocketId: 'pkt-masadepan',
+          pocketName: 'Tabungan Masa Depan',
+          pocketIcon: 'home',
+          pocketColor: '#FF9F0A',
+          type: 'deposit',
+          amount: 2000000,
+          note: 'Setoran rutin bulan ini',
+          timestamp: new Date(Date.now() - 1000 * 60 * 60 * 140).toISOString()
+        }
       ]
     };
 
-    let state = loadState();
-    let txMode = "deposit";
-    let selectedTxPocketId = state.pockets[0]?.id || "";
-    let editingPocketId = null;
-    let selectedColor = COLORS[0];
-    let historyFilter = "all";
-    let historySearch = "";
-    let prevTotalDisplay = null;
+    function cloneDefaultState() {
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
 
     function loadState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return structuredClone(DEFAULT_DATA);
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        if (!raw) return cloneDefaultState();
         const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.pockets) || !Array.isArray(parsed.transactions)) {
+          return cloneDefaultState();
+        }
         return {
-          ...structuredClone(DEFAULT_DATA),
-          ...parsed,
-          pockets: Array.isArray(parsed.pockets) && parsed.pockets.length ? parsed.pockets : structuredClone(DEFAULT_DATA.pockets),
-          transactions: Array.isArray(parsed.transactions) ? parsed.transactions : structuredClone(DEFAULT_DATA.transactions)
+          theme: parsed.theme === 'light' ? 'light' : 'dark',
+          privacyMode: Boolean(parsed.privacyMode),
+          pockets: parsed.pockets,
+          transactions: parsed.transactions
         };
-      } catch {
-        return structuredClone(DEFAULT_DATA);
+      } catch (e) {
+        return cloneDefaultState();
       }
     }
 
     function saveState() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch {}
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        // Ignore storage quota or sandbox restriction errors safely
+      }
     }
 
-    function formatIDR(num) {
-      if (state.hidden) return "Rp •••••••";
-      return "Rp " + Math.round(Number(num) || 0).toLocaleString("id-ID");
+    let state = loadState();
+    let activeTab = 'kantong';
+    let historyFilter = 'all';
+    let selectedPocketId = null;
+    let editingPocketId = null;
+    let txMode = 'deposit';
+    let formIcon = ICON_KEYS[0];
+    let formColor = AMOLED_COLORS[0].hex;
+    let toastTimer = null;
+
+    /* =========================================================================
+       3. FORMATTING & UTILITY HELPERS
+       ========================================================================= */
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
-    function showToast(msg) {
-      const el = document.getElementById("toast");
-      el.textContent = msg;
-      el.classList.add("show");
-      clearTimeout(showToast._timer);
-      showToast._timer = setTimeout(() => el.classList.remove("show"), 2400);
+    function formatDots(num) {
+      const n = Math.max(0, Math.round(Number(num) || 0));
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
 
+    function formatRupiah(amount, respectPrivacy = true) {
+      if (respectPrivacy && state.privacyMode) return 'Rp •••••••';
+      return 'Rp ' + formatDots(amount);
+    }
+
+    function formatCompactRupiah(amount, respectPrivacy = true) {
+      if (respectPrivacy && state.privacyMode) return 'Rp •••';
+      const val = Math.max(0, Number(amount) || 0);
+      if (val >= 1000000) {
+        const jt = (val / 1000000).toFixed(1).replace(/\.0$/, '').replace('.', ',');
+        return 'Rp ' + jt + 'jt';
+      }
+      if (val >= 1000) {
+        return 'Rp ' + Math.round(val / 1000) + 'rb';
+      }
+      return 'Rp ' + formatDots(val);
+    }
+
+    function parseFormattedNumber(str) {
+      const digits = String(str || '').replace(/\D/g, '');
+      return digits ? parseInt(digits, 10) : 0;
+    }
+
+    function formatCurrencyInput(inputEl) {
+      const num = parseFormattedNumber(inputEl.value);
+      inputEl.value = num > 0 ? formatDots(num) : '';
+    }
+
+    function formatIndoDate(dateStr) {
+      if (!dateStr) return 'Tanpa tenggat';
+      const parts = dateStr.split('-');
+      if (parts.length !== 3) return dateStr;
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      const mIdx = parseInt(parts[1], 10) - 1;
+      return `${parseInt(parts[2], 10)} ${months[mIdx] || ''} ${parts[0]}`;
+    }
+
+    function getTotalSaved() {
+      return state.pockets.reduce((sum, p) => sum + (Number(p.saved) || 0), 0);
+    }
+
+    function getTotalTarget() {
+      return state.pockets.reduce((sum, p) => sum + (Number(p.target) || 0), 0);
+    }
+
+    let displayedHeroBalance = getTotalSaved();
+
+    /* =========================================================================
+       4. WEB AUDIO TACTILE SOUND & CONFETTI CELEBRATION
+       ========================================================================= */
+    function playTactileTone(kind) {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+
+        const notes = kind === 'celebrate'
+          ? [523.25, 659.25, 783.99, 1046.5]
+          : kind === 'success'
+            ? [587.33, 880]
+            : [520];
+
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.065);
+          gain.gain.setValueAtTime(0.001, now + i * 0.065);
+          gain.gain.exponentialRampToValueAtTime(0.04, now + i * 0.065 + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.065 + 0.18);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.065);
+          osc.stop(now + i * 0.065 + 0.19);
+        });
+      } catch (e) {
+        // Audio blocked by browser policy; ignore safely
+      }
+    }
+
+    function triggerConfettiBurst() {
+      try {
+        const canvas = document.getElementById('confetti-canvas');
+        const shell = document.getElementById('app-shell');
+        if (!canvas || !shell) return;
+
+        const ctx = canvas.getContext('2d');
+        const rect = shell.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+
+        const colors = ['#0A84FF', '#30D158', '#5E5CE6', '#FF9F0A', '#FF375F', '#FFD60A'];
+        const particles = Array.from({ length: 65 }, () => ({
+          x: canvas.width * 0.5 + (Math.random() - 0.5) * 90,
+          y: canvas.height * 0.32,
+          vx: (Math.random() - 0.5) * 11,
+          vy: -Math.random() * 10 - 3,
+          size: Math.random() * 7 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rot: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 14,
+          alpha: 1
+        }));
+
+        let frame = 0;
+        function step() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          let alive = false;
+          particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.34;
+            p.vx *= 0.985;
+            p.rot += p.vRot;
+            if (frame > 45) p.alpha -= 0.025;
+            if (p.alpha > 0 && p.y < canvas.height + 20) {
+              alive = true;
+              ctx.save();
+              ctx.globalAlpha = Math.max(p.alpha, 0);
+              ctx.translate(p.x, p.y);
+              ctx.rotate((p.rot * Math.PI) / 180);
+              ctx.fillStyle = p.color;
+              ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+              ctx.restore();
+            }
+          });
+          frame++;
+          if (alive && frame < 110) {
+            requestAnimationFrame(step);
+          } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        }
+        requestAnimationFrame(step);
+      } catch (e) {
+        // Ignore canvas errors safely
+      }
+    }
+
+    /* =========================================================================
+       5. FLOATING LIQUID GLASS TOAST
+       ========================================================================= */
+    function showGlassToast(title, subtitle, badgeText, variant) {
+      const toast = document.getElementById('glass-toast');
+      const iconBox = document.getElementById('toast-icon-box');
+      const titleEl = document.getElementById('toast-title');
+      const subEl = document.getElementById('toast-subtitle');
+      const badgeEl = document.getElementById('toast-badge');
+      if (!toast) return;
+
+      const themes = {
+        blue: { bg: 'var(--ios-blue-soft)', color: 'var(--ios-blue)', char: '✦' },
+        green: { bg: 'var(--ios-green-soft)', color: 'var(--ios-green)', char: '✓' },
+        orange: { bg: 'var(--ios-red-soft)', color: 'var(--ios-red)', char: '!' }
+      };
+      const t = themes[variant] || themes.blue;
+
+      iconBox.style.backgroundColor = t.bg;
+      iconBox.style.color = t.color;
+      iconBox.textContent = t.char;
+      titleEl.textContent = title;
+      subEl.textContent = subtitle;
+
+      if (badgeText) {
+        badgeEl.classList.remove('hidden');
+        badgeEl.textContent = badgeText;
+        badgeEl.style.backgroundColor = t.bg;
+        badgeEl.style.color = t.color;
+      } else {
+        badgeEl.classList.add('hidden');
+      }
+
+      toast.classList.add('visible');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(dismissGlassToast, 2800);
+    }
+
+    function dismissGlassToast() {
+      const toast = document.getElementById('glass-toast');
+      if (toast) toast.classList.remove('visible');
+    }
+
+    /* =========================================================================
+       6. THEME, PRIVACY MODE & COLLAPSIBLE LARGE TITLE
+       ========================================================================= */
     function applyTheme() {
-      document.documentElement.setAttribute("data-theme", state.theme);
-      const metaTheme = document.querySelector('meta[name="theme-color"]');
-      if (metaTheme) metaTheme.setAttribute("content", state.theme === "dark" ? "#000000" : "#F2F4F8");
-      const icon = document.getElementById("themeIcon");
-      if (state.theme === "dark") {
-        icon.innerHTML = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
+      const html = document.documentElement;
+      const metaTheme = document.getElementById('meta-theme-color');
+      const sunIcons = document.querySelectorAll('.theme-sun-icon');
+      const moonIcons = document.querySelectorAll('.theme-moon-icon');
+
+      if (state.theme === 'dark') {
+        html.classList.add('dark');
+        if (metaTheme) metaTheme.setAttribute('content', '#000000');
+        sunIcons.forEach(el => el.classList.remove('hidden'));
+        moonIcons.forEach(el => el.classList.add('hidden'));
       } else {
-        icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+        html.classList.remove('dark');
+        if (metaTheme) metaTheme.setAttribute('content', '#F2F4F8');
+        sunIcons.forEach(el => el.classList.add('hidden'));
+        moonIcons.forEach(el => el.classList.remove('hidden'));
       }
     }
 
-    function updateEyeIcon() {
-      const icon = document.getElementById("eyeIcon");
-      if (state.hidden) {
-        icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
-      } else {
-        icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
-      }
-    }
-
-    function render() {
+    function toggleTheme() {
+      playTactileTone('tap');
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
       applyTheme();
-      updateEyeIcon();
-      document.querySelectorAll(".nav-item").forEach((btn) => {
-        btn.classList.toggle("active", btn.dataset.tab === state.activeTab);
-      });
+      saveState();
+      showGlassToast(
+        state.theme === 'dark' ? 'Mode Gelap AMOLED' : 'Mode Terang',
+        'Tampilan Liquid Glass disesuaikan',
+        state.theme === 'dark' ? 'AMOLED' : 'Light',
+        'blue'
+      );
+    }
 
-      const container = document.getElementById("viewContainer");
-      if (state.activeTab === "pockets") {
-        renderPocketsView(container);
-      } else if (state.activeTab === "stats") {
-        renderStatsView(container);
-      } else {
-        renderHistoryView(container);
+    function applyPrivacyIcons() {
+      const openIcons = document.querySelectorAll('.eye-icon-open');
+      const closedIcons = document.querySelectorAll('.eye-icon-closed');
+      openIcons.forEach(el => el.classList.toggle('hidden', state.privacyMode));
+      closedIcons.forEach(el => el.classList.toggle('hidden', !state.privacyMode));
+    }
+
+    function togglePrivacyMode() {
+      playTactileTone('tap');
+      state.privacyMode = !state.privacyMode;
+      saveState();
+      applyPrivacyIcons();
+      updateHeroBalance(false);
+      renderPockets();
+      if (activeTab === 'statistik') renderStatistics();
+      if (activeTab === 'riwayat') renderHistory();
+      showGlassToast(
+        state.privacyMode ? 'Privasi Saldo Aktif' : 'Nominal Ditampilkan',
+        state.privacyMode ? 'Saldo disamarkan menjadi •••••••' : 'Seluruh nominal terlihat jelas',
+        state.privacyMode ? 'Privat' : 'Publik',
+        'blue'
+      );
+    }
+
+    function setHeaderDateKicker() {
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      const now = new Date();
+      const el = document.getElementById('ios-date-kicker');
+      if (el) {
+        el.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
       }
     }
 
-    function renderPocketsView(container) {
-      const totalBalance = state.pockets.reduce((acc, p) => acc + Number(p.balance || 0), 0);
-      const totalTarget = state.pockets.reduce((acc, p) => acc + Number(p.target || 0), 0);
-      const overallPct = totalTarget > 0 ? Math.min(100, Math.round((totalBalance / totalTarget) * 100)) : 0;
+    function initCollapsibleLargeTitle() {
+      const scroller = document.getElementById('main-scroll');
+      const largeHeader = document.getElementById('expanded-hero-header');
+      const collapsedHeader = document.getElementById('collapsed-header');
+      if (!scroller || !largeHeader || !collapsedHeader) return;
 
-      const pocketsHtml = state.pockets.map((p, idx) => {
-        const pct = p.target > 0 ? Math.min(100, Math.round((p.balance / p.target) * 100)) : 0;
-        return `
-          <article class="pocket-card glass" style="animation-delay:${idx * 55}ms">
-            <div class="pocket-top">
-              <div class="pocket-info">
-                <div class="pocket-badge" style="background:${p.color}22; color:${p.color}">${p.emoji || "💰"}</div>
-                <div style="min-width:0">
-                  <h2 class="pocket-name">${escapeHtml(p.name)}</h2>
-                  <div class="pocket-target">Target ${formatIDR(p.target)}</div>
-                </div>
-              </div>
-              <div class="pocket-pct" style="color:${p.color}">${pct}%</div>
-            </div>
-            <div class="pocket-balance">${formatIDR(p.balance)}</div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width:${pct}%; background:${p.color}"></div>
-            </div>
-            <div class="pocket-actions">
-              <button type="button" class="btn-action btn-deposit pressable" onclick="openTxSheet('deposit','${p.id}')">+ Setor</button>
-              <button type="button" class="btn-action btn-withdraw pressable" onclick="openTxSheet('withdraw','${p.id}')">− Tarik</button>
-              <button type="button" class="btn-action pressable" onclick="openPocketSheet('${p.id}')">Edit</button>
-            </div>
-          </article>
-        `;
-      }).join("");
+      let ticking = false;
+      function updateScrollHeader() {
+        const scrollY = scroller.scrollTop;
+        const progress = Math.min(Math.max(scrollY / 44, 0), 1);
 
-      container.innerHTML = `
-        <section class="hero-card glass">
-          <div class="hero-glow"></div>
-          <div class="hero-label">Total Tabungan</div>
-          <p id="heroTotalAmount" class="hero-amount">${formatIDR(totalBalance)}</p>
-          <div class="hero-meta">
-            <span class="pill-stat">Kantong: <strong>${state.pockets.length}</strong></span>
-            <span class="pill-stat">Target Gabungan: <strong>${overallPct}%</strong></span>
-          </div>
-        </section>
-        <div class="section-head">
-          <h2 class="section-title">Kantong Tabungan</h2>
-          <span class="section-sub">${state.pockets.length} aktif</span>
-        </div>
-        <div class="pocket-list">${pocketsHtml}</div>
-      `;
+        largeHeader.style.opacity = Math.max(1 - progress * 1.45, 0).toFixed(3);
+        largeHeader.style.transform = `translate3d(0, ${(-progress * 8).toFixed(1)}px, 0)`;
+        largeHeader.style.pointerEvents = progress > 0.75 ? 'none' : 'auto';
 
-      animateCountUp("heroTotalAmount", totalBalance);
+        const barProgress = Math.min(Math.max((progress - 0.35) / 0.65, 0), 1);
+        collapsedHeader.style.opacity = barProgress.toFixed(3);
+        collapsedHeader.style.transform = `translate3d(0, ${((1 - barProgress) * -6).toFixed(1)}px, 0)`;
+        collapsedHeader.style.pointerEvents = barProgress > 0.6 ? 'auto' : 'none';
+        ticking = false;
+      }
+
+      scroller.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(updateScrollHeader);
+          ticking = true;
+        }
+      }, { passive: true });
     }
 
-    function animateCountUp(elId, targetVal) {
-      const el = document.getElementById(elId);
-      if (!el || state.hidden) return;
-      const startVal = prevTotalDisplay !== null ? prevTotalDisplay : targetVal;
-      prevTotalDisplay = targetVal;
-      if (startVal === targetVal) {
-        el.textContent = formatIDR(targetVal);
+    /* =========================================================================
+       7. HERO BALANCE COUNT-UP ANIMATION
+       ========================================================================= */
+    function updateHeroBalance(animate) {
+      const totalSaved = getTotalSaved();
+      const totalTarget = getTotalTarget();
+      const heroEl = document.getElementById('hero-total-balance');
+      const collapsedEl = document.getElementById('collapsed-balance');
+      const badgeEl = document.getElementById('hero-progress-badge');
+      const subtitleEl = document.getElementById('hero-target-subtitle');
+      const barEl = document.getElementById('hero-overall-bar');
+      if (!heroEl) return;
+
+      const pct = totalTarget > 0 ? Math.min((totalSaved / totalTarget) * 100, 100) : 0;
+      const rawPct = totalTarget > 0 ? (totalSaved / totalTarget) * 100 : 0;
+
+      badgeEl.textContent = `▲ ${rawPct.toFixed(1).replace('.', ',')}%`;
+      subtitleEl.textContent = `Terkumpul dari total target ${formatRupiah(totalTarget)}`;
+      barEl.style.width = `${pct.toFixed(1)}%`;
+
+      if (state.privacyMode || !animate) {
+        displayedHeroBalance = totalSaved;
+        const formatted = formatRupiah(totalSaved);
+        heroEl.textContent = formatted;
+        collapsedEl.textContent = formatted;
         return;
       }
-      const startTime = performance.now();
+
+      const startVal = displayedHeroBalance;
+      const diff = totalSaved - startVal;
       const duration = 450;
-      function step(now) {
-        const p = Math.min(1, (now - startTime) / duration);
-        const eased = 1 - Math.pow(1 - p, 3);
-        const current = Math.round(startVal + (targetVal - startVal) * eased);
-        el.textContent = formatIDR(current);
-        if (p < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
+      const startTime = performance.now();
 
-    function renderStatsView(container) {
-      const total = state.pockets.reduce((s, p) => s + Number(p.balance || 0), 0);
-      const radius = 42;
-      const circ = 2 * Math.PI * radius;
-      let offset = 0;
-
-      const slices = state.pockets.map((p) => {
-        const share = total > 0 ? Number(p.balance || 0) / total : 0;
-        const len = share * circ;
-        const circle = `<circle cx="54" cy="54" r="${radius}" fill="none" stroke="${p.color}" stroke-width="14" stroke-dasharray="${len} ${circ}" stroke-dashoffset="${-offset}" transform="rotate(-90 54 54)"/>`;
-        offset += len;
-        return circle;
-      }).join("");
-
-      const legend = state.pockets.map((p) => {
-        const pct = total > 0 ? Math.round((p.balance / total) * 100) : 0;
-        return `
-          <div class="legend-item">
-            <span class="legend-label"><span class="legend-dot" style="background:${p.color}"></span>${escapeHtml(p.name)}</span>
-            <strong>${pct}%</strong>
-          </div>
-        `;
-      }).join("");
-
-      // 6 bulan terakhir
-      const now = new Date();
-      const months = [];
-      for (let i = 5; i >= 0; i--) {
-        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-        const mKey = `${d.getFullYear()}-${d.getMonth()}`;
-        const label = d.toLocaleDateString("id-ID", { month: "short" });
-        let dep = 0;
-        let wit = 0;
-        state.transactions.forEach((t) => {
-          const td = new Date(t.date);
-          if (`${td.getFullYear()}-${td.getMonth()}` === mKey) {
-            if (t.type === "deposit") dep += Number(t.amount || 0);
-            else wit += Number(t.amount || 0);
-          }
-        });
-        months.push({ label, dep, wit });
-      }
-      const maxVal = Math.max(1, ...months.flatMap((m) => [m.dep, m.wit]));
-
-      const barsHtml = months.map((m) => {
-        const hIn = Math.max(4, Math.round((m.dep / maxVal) * 100));
-        const hOut = Math.max(4, Math.round((m.wit / maxVal) * 100));
-        return `
-          <div class="bar-col">
-            <div class="bar-pair">
-              <div class="bar-in" style="height:${hIn}%" title="Setor: ${formatIDR(m.dep)}"></div>
-              <div class="bar-out" style="height:${hOut}%" title="Tarik: ${formatIDR(m.wit)}"></div>
-            </div>
-            <span class="bar-month">${m.label}</span>
-          </div>
-        `;
-      }).join("");
-
-      // Performa
-      const nearestPocket = [...state.pockets]
-        .filter((p) => p.target > 0 && p.balance < p.target)
-        .sort((a, b) => (b.balance / b.target) - (a.balance / a.target))[0] || state.pockets[0];
-
-      const curMonthKey = `${now.getFullYear()}-${now.getMonth()}`;
-      const monthDeposit = state.transactions
-        .filter((t) => {
-          const td = new Date(t.date);
-          return t.type === "deposit" && `${td.getFullYear()}-${td.getMonth()}` === curMonthKey;
-        })
-        .reduce((s, t) => s + Number(t.amount || 0), 0);
-
-      const completedCount = state.pockets.filter((p) => p.target > 0 && p.balance >= p.target).length;
-
-      container.innerHTML = `
-        <section class="stats-card glass">
-          <h2 class="section-title" style="margin-bottom:12px;">Alokasi Kantong</h2>
-          <div class="donut-wrap">
-            <svg width="108" height="108" viewBox="0 0 108 108" style="flex-shrink:0;">
-              <circle cx="54" cy="54" r="${radius}" fill="none" stroke="rgba(148,163,184,0.18)" stroke-width="14"/>
-              ${slices}
-            </svg>
-            <div class="legend-list">${legend}</div>
-          </div>
-        </section>
-
-        <section class="stats-card glass">
-          <div class="section-head" style="margin-bottom:6px;">
-            <h2 class="section-title">Setoran vs Penarikan (6 Bln)</h2>
-            <span class="section-sub"><span style="color:var(--success)">● Setor</span> · <span style="color:var(--danger)">● Tarik</span></span>
-          </div>
-          <div class="bars-grid">${barsHtml}</div>
-        </section>
-
-        <section class="stats-card glass">
-          <h2 class="section-title" style="margin-bottom:12px;">Ringkasan Performa</h2>
-          <div class="perf-grid">
-            <div class="perf-item">
-              <div>
-                <div class="tx-sub">Kantong Terdekat Target</div>
-                <div class="tx-title">${nearestPocket ? `${nearestPocket.emoji} ${escapeHtml(nearestPocket.name)}` : "-"}</div>
-              </div>
-              <strong>${nearestPocket && nearestPocket.target > 0 ? Math.min(100, Math.round((nearestPocket.balance / nearestPocket.target) * 100)) + "%" : "0%"}</strong>
-            </div>
-            <div class="perf-item">
-              <div>
-                <div class="tx-sub">Total Setoran Bulan Ini</div>
-                <div class="tx-title">${now.toLocaleDateString("id-ID", { month: "long", year: "numeric" })}</div>
-              </div>
-              <strong style="color:var(--success)">${formatIDR(monthDeposit)}</strong>
-            </div>
-            <div class="perf-item">
-              <div>
-                <div class="tx-sub">Tingkat Pencapaian Target</div>
-                <div class="tx-title">${completedCount} dari ${state.pockets.length} kantong tercapai</div>
-              </div>
-              <strong>${state.pockets.length ? Math.round((completedCount / state.pockets.length) * 100) : 0}%</strong>
-            </div>
-          </div>
-        </section>
-      `;
-    }
-
-    function renderHistoryView(container) {
-      const filtered = state.transactions.filter((t) => {
-        if (historyFilter !== "all" && t.type !== historyFilter) return false;
-        const p = state.pockets.find((pk) => pk.id === t.pocketId);
-        const hay = `${t.note || ""} ${p ? p.name : ""}`.toLowerCase();
-        return hay.includes(historySearch.trim().toLowerCase());
-      });
-
-      const rowsHtml = filtered.length
-        ? filtered.map((t) => {
-            const p = state.pockets.find((pk) => pk.id === t.pocketId);
-            const isDep = t.type === "deposit";
-            const dStr = new Date(t.date).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
-            return `
-              <div class="tx-row">
-                <div style="min-width:0">
-                  <p class="tx-title">${escapeHtml(t.note || (isDep ? "Setoran Tabungan" : "Penarikan Dana"))}</p>
-                  <div class="tx-sub">${p ? `${p.emoji} ${escapeHtml(p.name)}` : "Kantong"} · ${dStr}</div>
-                </div>
-                <div class="tx-amt" style="color:${isDep ? "var(--success)" : "var(--danger)"}">
-                  ${isDep ? "+" : "−"}${formatIDR(t.amount)}
-                </div>
-              </div>
-            `;
-          }).join("")
-        : `<div class="tx-row"><div class="tx-sub">Belum ada transaksi yang sesuai.</div></div>`;
-
-      container.innerHTML = `
-        <input id="txSearchInput" type="search" class="search-box glass" placeholder="Cari catatan atau nama kantong..." value="${escapeHtml(historySearch)}" />
-        <div class="filter-row">
-          <button type="button" class="chip-btn ${historyFilter === "all" ? "active" : ""}" data-filter="all">Semua</button>
-          <button type="button" class="chip-btn ${historyFilter === "deposit" ? "active" : ""}" data-filter="deposit">Setoran</button>
-          <button type="button" class="chip-btn ${historyFilter === "withdraw" ? "active" : ""}" data-filter="withdraw">Penarikan</button>
-        </div>
-        <div class="grouped-list glass">${rowsHtml}</div>
-      `;
-
-      document.getElementById("txSearchInput").addEventListener("input", (e) => {
-        historySearch = e.target.value;
-        renderHistoryView(container);
-      });
-
-      container.querySelectorAll(".chip-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          historyFilter = btn.dataset.filter;
-          renderHistoryView(container);
-        });
-      });
-    }
-
-    function openTxSheet(type, pocketId) {
-      txMode = type;
-      selectedTxPocketId = pocketId || state.pockets[0]?.id || "";
-      document.getElementById("txSheetTitle").textContent = type === "deposit" ? "Setor Tabungan" : "Tarik Dana";
-      document.getElementById("txAmountInput").value = "";
-      document.getElementById("txNoteInput").value = "";
-      renderTxPocketPicker();
-      openSheet("txSheet");
-      setTimeout(() => document.getElementById("txAmountInput").focus(), 180);
-    }
-
-    function renderTxPocketPicker() {
-      const wrap = document.getElementById("txPocketPicker");
-      wrap.innerHTML = state.pockets.map((p) => `
-        <button type="button" class="pick-pill pressable ${p.id === selectedTxPocketId ? "selected" : ""}" onclick="selectTxPocket('${p.id}')">
-          ${p.emoji} ${escapeHtml(p.name)}
-        </button>
-      `).join("");
-    }
-
-    function selectTxPocket(id) {
-      selectedTxPocketId = id;
-      renderTxPocketPicker();
-    }
-
-    function openPocketSheet(pocketId = null) {
-      editingPocketId = pocketId;
-      const delBtn = document.getElementById("pocketDeleteBtn");
-      if (pocketId) {
-        const p = state.pockets.find((item) => item.id === pocketId);
-        if (!p) return;
-        document.getElementById("pocketSheetTitle").textContent = "Edit Kantong";
-        document.getElementById("pocketNameInput").value = p.name;
-        document.getElementById("pocketTargetInput").value = p.target;
-        document.getElementById("pocketEmojiInput").value = p.emoji || "💰";
-        selectedColor = p.color || COLORS[0];
-        delBtn.style.display = state.pockets.length > 1 ? "block" : "none";
-      } else {
-        document.getElementById("pocketSheetTitle").textContent = "Kantong Baru";
-        document.getElementById("pocketNameInput").value = "";
-        document.getElementById("pocketTargetInput").value = "";
-        document.getElementById("pocketEmojiInput").value = "💰";
-        selectedColor = COLORS[state.pockets.length % COLORS.length];
-        delBtn.style.display = "none";
-      }
-      renderColorPicker();
-      openSheet("pocketSheet");
-    }
-
-    function renderColorPicker() {
-      const wrap = document.getElementById("colorPicker");
-      wrap.innerHTML = COLORS.map((c) => `
-        <button type="button" class="color-dot ${c === selectedColor ? "selected" : ""}" style="background:${c}" onclick="selectColor('${c}')" aria-label="Warna ${c}"></button>
-      `).join("");
-    }
-
-    function selectColor(c) {
-      selectedColor = c;
-      renderColorPicker();
-    }
-
-    function openSheet(id) {
-      document.getElementById(id).classList.add("open");
-    }
-
-    function closeSheet(id) {
-      document.getElementById(id).classList.remove("open");
-    }
-
-    function escapeHtml(str) {
-      return String(str || "").replace(/[&<>"']/g, (m) => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-      }[m]));
-    }
-
-    function launchConfetti() {
-      const canvas = document.getElementById("confettiCanvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const pieces = Array.from({ length: 65 }, () => ({
-        x: Math.random() * canvas.width,
-        y: -20 - Math.random() * 120,
-        r: 4 + Math.random() * 5,
-        c: COLORS[Math.floor(Math.random() * COLORS.length)],
-        vx: (Math.random() - 0.5) * 3,
-        vy: 2.5 + Math.random() * 4,
-        rot: Math.random() * Math.PI * 2
-      }));
-      let frame = 0;
-      function tick() {
-        frame++;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        pieces.forEach((pt) => {
-          pt.x += pt.vx;
-          pt.y += pt.vy;
-          pt.rot += 0.08;
-          ctx.save();
-          ctx.translate(pt.x, pt.y);
-          ctx.rotate(pt.rot);
-          ctx.fillStyle = pt.c;
-          ctx.fillRect(-pt.r / 2, -pt.r / 2, pt.r, pt.r * 0.7);
-          ctx.restore();
-        });
-        if (frame < 110) requestAnimationFrame(tick);
-        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      function tick(now) {
+        const t = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const current = Math.round(startVal + diff * eased);
+        const text = formatRupiah(current);
+        heroEl.textContent = text;
+        collapsedEl.textContent = text;
+        if (t < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          displayedHeroBalance = totalSaved;
+        }
       }
       requestAnimationFrame(tick);
     }
 
-    // Event Listeners
-    document.querySelectorAll(".nav-item").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        state.activeTab = btn.dataset.tab;
-        saveState();
-        render();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    });
+    /* =========================================================================
+       8. TAB NAVIGATION (3 TABS + SLIDING LIQUID GLASS PILL)
+       ========================================================================= */
+    function switchTab(tabName, index) {
+      if (activeTab === tabName) return;
+      playTactileTone('tap');
+      activeTab = tabName;
 
-    document.getElementById("fabAddPocket").addEventListener("click", () => openPocketSheet(null));
-
-    document.getElementById("privacyBtn").addEventListener("click", () => {
-      state.hidden = !state.hidden;
-      saveState();
-      render();
-      showToast(state.hidden ? "Saldo disembunyikan" : "Saldo ditampilkan");
-    });
-
-    document.getElementById("themeBtn").addEventListener("click", () => {
-      state.theme = state.theme === "dark" ? "light" : "dark";
-      saveState();
-      render();
-    });
-
-    document.querySelectorAll(".q-chip").forEach((chip) => {
-      chip.addEventListener("click", () => {
-        const add = Number(chip.dataset.add || 0);
-        const inp = document.getElementById("txAmountInput");
-        inp.value = (Number(inp.value || 0) + add);
-      });
-    });
-
-    document.getElementById("txSubmitBtn").addEventListener("click", () => {
-      const amount = Number(document.getElementById("txAmountInput").value);
-      const note = document.getElementById("txNoteInput").value.trim();
-      if (!selectedTxPocketId || !amount || amount <= 0) {
-        showToast("Masukkan nominal valid");
-        return;
-      }
-      const p = state.pockets.find((item) => item.id === selectedTxPocketId);
-      if (!p) return;
-
-      if (txMode === "withdraw" && amount > p.balance) {
-        showToast("Saldo kantong tidak mencukupi");
-        return;
+      const slider = document.getElementById('tab-pill-slider');
+      if (slider) {
+        slider.style.transform = `translate3d(${index * 100}%, 0, 0)`;
       }
 
-      const prevPct = p.target > 0 ? (p.balance / p.target) * 100 : 0;
-      p.balance = txMode === "deposit" ? Number(p.balance) + amount : Number(p.balance) - amount;
-      const newPct = p.target > 0 ? (p.balance / p.target) * 100 : 0;
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
+      });
+
+      document.querySelectorAll('.tab-view').forEach(view => {
+        view.classList.toggle('active', view.id === `view-${tabName}`);
+      });
+
+      const scroller = document.getElementById('main-scroll');
+      if (scroller) scroller.scrollTop = 0;
+
+      if (tabName === 'kantong') renderPockets();
+      if (tabName === 'statistik') renderStatistics();
+      if (tabName === 'riwayat') renderHistory();
+    }
+
+    /* =========================================================================
+       9. RENDER KANTONG CARDS (+ SETOR, − TARIK, EDIT)
+       ========================================================================= */
+    function renderPockets() {
+      const container = document.getElementById('pockets-container');
+      const countLabel = document.getElementById('pocket-count-label');
+      if (!container) return;
+
+      countLabel.textContent = `${state.pockets.length} Kantong`;
+
+      if (state.pockets.length === 0) {
+        container.innerHTML = `
+          <div class="liquid-glass card-pad" style="text-align: center;">
+            <p style="font-size: 16px; font-weight: 800;">Belum Ada Kantong Tabungan</p>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+              Ketuk tombol + di kanan bawah untuk membuat target tabungan pertamamu.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = state.pockets.map((pocket, idx) => {
+        const rawPct = pocket.target > 0 ? (pocket.saved / pocket.target) * 100 : 0;
+        const clampedPct = Math.min(rawPct, 100);
+        const isCompleted = rawPct >= 100;
+        const accent = isCompleted ? 'var(--ios-green)' : (pocket.color || '#0A84FF');
+
+        return `
+          <article onclick="openPocketTxSheet('${pocket.id}', 'deposit')"
+            class="liquid-glass ios-press card-pad-sm animate-ios-card"
+            style="animation-delay: ${idx * 45}ms; cursor: pointer;">
+            <!-- Card Header -->
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+                <div style="width: 44px; height: 44px; border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background-color: ${pocket.color}24; color: ${pocket.color};">
+                  ${getIconSvg(pocket.icon)}
+                </div>
+                <div style="min-width: 0;">
+                  <h4 style="font-size: 15px; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${escapeHtml(pocket.name)}
+                  </h4>
+                  <p style="font-size: 11px; font-weight: 500; color: var(--text-secondary); margin-top: 2px;">
+                    Target: ${formatIndoDate(pocket.targetDate)}
+                  </p>
+                </div>
+              </div>
+
+              <div style="flex-shrink: 0;">
+                ${isCompleted
+                  ? `<span style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; background-color: var(--ios-green-soft); color: var(--ios-green);">
+                       Tercapai
+                     </span>`
+                  : `<span class="tabular-nums" style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; background-color: ${pocket.color}22; color: ${pocket.color};">
+                       ${Math.round(rawPct)}%
+                     </span>`
+                }
+              </div>
+            </div>
+
+            <!-- Saved vs Target -->
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 14px 0 8px;">
+              <span class="tabular-nums" style="font-size: 16px; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                ${formatRupiah(pocket.saved)}
+              </span>
+              <span class="tabular-nums" style="font-size: 11px; font-weight: 600; color: var(--text-secondary); flex-shrink: 0;">
+                dari ${formatRupiah(pocket.target)}
+              </span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="ios-fill" style="width: 100%; height: 8px; border-radius: 999px; overflow: hidden;">
+              <div class="progress-fill" style="height: 100%; width: ${clampedPct}%; border-radius: 999px; background-color: ${accent};"></div>
+            </div>
+
+            <!-- 3 Action Buttons: + Setor, − Tarik, Edit -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--separator-hairline);">
+              <button type="button" onclick="event.stopPropagation(); openPocketTxSheet('${pocket.id}', 'deposit')"
+                class="ios-press-sm"
+                style="height: 36px; border-radius: 999px; font-size: 12px; font-weight: 800; background-color: var(--ios-blue-soft); color: var(--ios-blue);">
+                + Setor
+              </button>
+
+              <button type="button" onclick="event.stopPropagation(); openPocketTxSheet('${pocket.id}', 'withdraw')"
+                class="ios-fill ios-press-sm"
+                style="height: 36px; border-radius: 999px; font-size: 12px; font-weight: 800; color: var(--text-primary);">
+                − Tarik
+              </button>
+
+              <button type="button" onclick="event.stopPropagation(); openEditPocketSheet('${pocket.id}')"
+                aria-label="Edit Kantong ${escapeHtml(pocket.name)}"
+                class="ios-fill ios-press-sm"
+                style="height: 36px; padding: 0 14px; border-radius: 999px; font-size: 12px; font-weight: 800; color: var(--text-secondary); display: flex; align-items: center; gap: 5px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                </svg>
+                <span>Edit</span>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    /* =========================================================================
+       10. BOTTOM SHEETS (TRANSACTION & CREATE/EDIT POCKET)
+       ========================================================================= */
+    function closeAllSheets() {
+      const backdrop = document.getElementById('sheet-backdrop');
+      if (backdrop) backdrop.classList.remove('open');
+      document.querySelectorAll('.ios-bottom-sheet').forEach(s => s.classList.remove('open'));
+      hideDeleteConfirmation();
+    }
+
+    function openSheet(sheetId) {
+      closeAllSheets();
+      const backdrop = document.getElementById('sheet-backdrop');
+      const sheet = document.getElementById(sheetId);
+      if (backdrop) backdrop.classList.add('open');
+      if (sheet) sheet.classList.add('open');
+    }
+
+    // --- Sheet 1: Deposit & Withdraw ---
+    function openPocketTxSheet(pocketId, initialMode) {
+      const pocket = state.pockets.find(p => p.id === pocketId) || state.pockets[0];
+      if (!pocket) {
+        openCreatePocketSheet();
+        return;
+      }
+
+      playTactileTone('tap');
+      selectedPocketId = pocket.id;
+      renderTxPocketSelector();
+      populatePocketTxUI(pocket);
+      setTransactionMode(initialMode || 'deposit', false);
+      document.getElementById('tx-amount-input').value = '';
+      document.getElementById('tx-note-input').value = '';
+      openSheet('sheet-pocket-tx');
+    }
+
+    function renderTxPocketSelector() {
+      const strip = document.getElementById('tx-pocket-selector');
+      if (!strip) return;
+      strip.innerHTML = state.pockets.map(p => {
+        const selected = p.id === selectedPocketId;
+        return `
+          <button type="button" onclick="selectTxPocket('${p.id}')"
+            class="ios-press-sm"
+            style="padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; ${selected
+              ? `background-color: ${p.color}; color: #FFFFFF;`
+              : `background-color: var(--bg-glass-elevated); color: var(--text-secondary);`}">
+            <span style="display: inline-flex; width: 15px; height: 15px;">${getIconSvg(p.icon)}</span>
+            <span style="max-width: 115px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(p.name)}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectTxPocket(pocketId) {
+      const pocket = state.pockets.find(p => p.id === pocketId);
+      if (!pocket) return;
+      playTactileTone('tap');
+      selectedPocketId = pocket.id;
+      renderTxPocketSelector();
+      populatePocketTxUI(pocket);
+    }
+
+    function populatePocketTxUI(pocket) {
+      const iconBox = document.getElementById('detail-icon-box');
+      iconBox.style.backgroundColor = `${pocket.color}24`;
+      iconBox.style.color = pocket.color;
+      iconBox.innerHTML = getIconSvg(pocket.icon);
+
+      document.getElementById('detail-title').textContent = pocket.name;
+      document.getElementById('detail-saved-text').textContent = formatRupiah(pocket.saved);
+      document.getElementById('detail-target-text').textContent = `Target ${formatRupiah(pocket.target)} • ${formatIndoDate(pocket.targetDate)}`;
+
+      const rawPct = pocket.target > 0 ? (pocket.saved / pocket.target) * 100 : 0;
+      const clampedPct = Math.min(rawPct, 100);
+      const circumference = 138.23;
+      const offset = circumference - (clampedPct / 100) * circumference;
+
+      const ring = document.getElementById('detail-ring-progress');
+      ring.style.strokeDashoffset = offset.toFixed(2);
+      ring.style.stroke = rawPct >= 100 ? 'var(--ios-green)' : pocket.color;
+
+      document.getElementById('detail-ring-pct').textContent = `${Math.round(rawPct)}%`;
+      document.getElementById('detail-achieved-badge').classList.toggle('hidden', rawPct < 100);
+    }
+
+    function setTransactionMode(mode, withSound = true) {
+      if (withSound) playTactileTone('tap');
+      txMode = mode;
+
+      const depBtn = document.getElementById('mode-deposit-btn');
+      const witBtn = document.getElementById('mode-withdraw-btn');
+      const submitBtn = document.getElementById('tx-submit-btn');
+
+      if (mode === 'deposit') {
+        depBtn.style.backgroundColor = 'var(--ios-blue)';
+        depBtn.style.color = '#FFFFFF';
+        witBtn.style.backgroundColor = 'transparent';
+        witBtn.style.color = 'var(--text-secondary)';
+        submitBtn.className = 'primary-cta-btn ios-press';
+        submitBtn.textContent = 'Konfirmasi Setoran';
+      } else {
+        witBtn.style.backgroundColor = 'var(--ios-red)';
+        witBtn.style.color = '#FFFFFF';
+        depBtn.style.backgroundColor = 'transparent';
+        depBtn.style.color = 'var(--text-secondary)';
+        submitBtn.className = 'danger-cta-btn ios-press';
+        submitBtn.textContent = 'Konfirmasi Penarikan';
+      }
+    }
+
+    function addQuickAmount(delta) {
+      playTactileTone('tap');
+      const input = document.getElementById('tx-amount-input');
+      const current = parseFormattedNumber(input.value);
+      input.value = formatDots(current + delta);
+    }
+
+    function submitPocketTransaction() {
+      const pocket = state.pockets.find(p => p.id === selectedPocketId);
+      if (!pocket) return;
+
+      const amount = parseFormattedNumber(document.getElementById('tx-amount-input').value);
+      const note = document.getElementById('tx-note-input').value.trim();
+
+      if (amount <= 0) {
+        playTactileTone('tap');
+        showGlassToast('Nominal Kosong', 'Masukkan nominal lebih dari Rp 0', '!', 'orange');
+        return;
+      }
+
+      if (txMode === 'withdraw' && amount > pocket.saved) {
+        playTactileTone('tap');
+        showGlassToast('Saldo Tidak Cukup', `Maksimal penarikan ${formatCompactRupiah(pocket.saved)}`, '!', 'orange');
+        return;
+      }
+
+      const wasBelowTarget = pocket.saved < pocket.target;
+      if (txMode === 'deposit') {
+        pocket.saved += amount;
+      } else {
+        pocket.saved -= amount;
+      }
 
       state.transactions.unshift({
-        id: "tx_" + Date.now(),
-        pocketId: p.id,
+        id: 'tx-' + Date.now(),
+        pocketId: pocket.id,
+        pocketName: pocket.name,
+        pocketIcon: pocket.icon,
+        pocketColor: pocket.color,
         type: txMode,
-        amount,
-        note,
-        date: new Date().toISOString()
+        amount: amount,
+        note: note || (txMode === 'deposit' ? 'Setoran tabungan' : 'Penarikan dana'),
+        timestamp: new Date().toISOString()
       });
 
       saveState();
-      closeSheet("txSheet");
-      render();
+      updateHeroBalance(true);
+      renderPockets();
+      if (activeTab === 'statistik') renderStatistics();
+      if (activeTab === 'riwayat') renderHistory();
+      closeAllSheets();
 
-      if (txMode === "deposit" && prevPct < 100 && newPct >= 100) {
-        launchConfetti();
-        showToast(`Target "${p.name}" tercapai 100%!`);
+      const reachedNow = txMode === 'deposit' && wasBelowTarget && pocket.saved >= pocket.target;
+      if (reachedNow) {
+        playTactileTone('celebrate');
+        triggerConfettiBurst();
+        showGlassToast('Target Tercapai!', `${pocket.name} mencapai 100%`, '100%', 'green');
+      } else if (txMode === 'deposit') {
+        playTactileTone('success');
+        showGlassToast('Setoran Berhasil', pocket.name, `+${formatCompactRupiah(amount, false)}`, 'green');
       } else {
-        showToast(txMode === "deposit" ? "Setoran berhasil dicatat" : "Penarikan berhasil dicatat");
+        playTactileTone('success');
+        showGlassToast('Penarikan Berhasil', pocket.name, `−${formatCompactRupiah(amount, false)}`, 'orange');
       }
-    });
+    }
 
-    document.getElementById("pocketSaveBtn").addEventListener("click", () => {
-      const name = document.getElementById("pocketNameInput").value.trim();
-      const target = Math.max(0, Number(document.getElementById("pocketTargetInput").value || 0));
-      const emoji = document.getElementById("pocketEmojiInput").value.trim() || "💰";
+    // --- Sheet 2: Create & Edit Pocket ---
+    function openCreatePocketSheet() {
+      playTactileTone('tap');
+      editingPocketId = null;
+      document.getElementById('pocket-form-heading').textContent = 'Kantong Baru';
+      document.getElementById('form-saved-label').textContent = 'Saldo Awal (Rp)';
+      document.getElementById('pocket-form-submit-btn').textContent = 'Simpan Kantong';
+      document.getElementById('delete-pocket-trigger-btn').classList.add('hidden');
+      hideDeleteConfirmation();
+
+      document.getElementById('form-pocket-name').value = '';
+      document.getElementById('form-pocket-target').value = '';
+      document.getElementById('form-pocket-saved').value = '';
+      document.getElementById('form-pocket-date').value = '2027-06-30';
+
+      formIcon = ICON_KEYS[0];
+      formColor = AMOLED_COLORS[0].hex;
+      renderPocketFormSelectors();
+      openSheet('sheet-pocket-form');
+    }
+
+    function openEditPocketSheet(pocketId) {
+      const pocket = state.pockets.find(p => p.id === pocketId);
+      if (!pocket) return;
+
+      playTactileTone('tap');
+      editingPocketId = pocket.id;
+      document.getElementById('pocket-form-heading').textContent = 'Edit Kantong';
+      document.getElementById('form-saved-label').textContent = 'Saldo Terkumpul (Rp)';
+      document.getElementById('pocket-form-submit-btn').textContent = 'Simpan Perubahan';
+      document.getElementById('delete-pocket-trigger-btn').classList.remove('hidden');
+      hideDeleteConfirmation();
+
+      document.getElementById('form-pocket-name').value = pocket.name;
+      document.getElementById('form-pocket-target').value = formatDots(pocket.target);
+      document.getElementById('form-pocket-saved').value = pocket.saved > 0 ? formatDots(pocket.saved) : '';
+      document.getElementById('form-pocket-date').value = pocket.targetDate || '2027-12-31';
+
+      formIcon = pocket.icon || ICON_KEYS[0];
+      formColor = pocket.color || AMOLED_COLORS[0].hex;
+      renderPocketFormSelectors();
+      openSheet('sheet-pocket-form');
+    }
+
+    function renderPocketFormSelectors() {
+      const iconGrid = document.getElementById('icon-selector-grid');
+      iconGrid.innerHTML = ICON_KEYS.map(key => {
+        const selected = key === formIcon;
+        return `
+          <button type="button" onclick="selectFormIcon('${key}')" aria-label="${ICON_LIBRARY[key].label}"
+            class="ios-press-sm"
+            style="height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; ${selected
+              ? `background-color: ${formColor}; color: #FFFFFF; box-shadow: 0 4px 12px ${formColor}55;`
+              : `background-color: var(--bg-glass-elevated); color: var(--text-primary);`}">
+            ${getIconSvg(key)}
+          </button>
+        `;
+      }).join('');
+
+      const colorRow = document.getElementById('color-selector-row');
+      colorRow.innerHTML = AMOLED_COLORS.map(c => {
+        const selected = c.hex === formColor;
+        return `
+          <button type="button" onclick="selectFormColor('${c.hex}')" aria-label="${c.name}"
+            class="ios-press-sm"
+            style="width: 32px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background-color: ${c.hex}; ${selected
+              ? `transform: scale(1.15); box-shadow: 0 0 0 2.5px var(--bg-canvas), 0 0 0 4.5px ${c.hex};`
+              : ''}">
+            ${selected ? '<span style="color: #FFFFFF; font-size: 11px; font-weight: 800;">✓</span>' : ''}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectFormIcon(key) {
+      playTactileTone('tap');
+      formIcon = key;
+      renderPocketFormSelectors();
+    }
+
+    function selectFormColor(hex) {
+      playTactileTone('tap');
+      formColor = hex;
+      renderPocketFormSelectors();
+    }
+
+    function showDeleteConfirmation() {
+      playTactileTone('tap');
+      document.getElementById('delete-confirm-box').classList.remove('hidden');
+    }
+
+    function hideDeleteConfirmation() {
+      const box = document.getElementById('delete-confirm-box');
+      if (box) box.classList.add('hidden');
+    }
+
+    function confirmDeletePocket() {
+      const idx = state.pockets.findIndex(p => p.id === editingPocketId);
+      if (idx === -1) return;
+      const deletedName = state.pockets[idx].name;
+      state.pockets.splice(idx, 1);
+      saveState();
+
+      updateHeroBalance(true);
+      renderPockets();
+      if (activeTab === 'statistik') renderStatistics();
+      closeAllSheets();
+      playTactileTone('tap');
+      showGlassToast('Kantong Dihapus', deletedName, 'Dihapus', 'orange');
+    }
+
+    function savePocketForm() {
+      const name = document.getElementById('form-pocket-name').value.trim();
+      const target = parseFormattedNumber(document.getElementById('form-pocket-target').value);
+      const savedAmount = parseFormattedNumber(document.getElementById('form-pocket-saved').value);
+      const targetDate = document.getElementById('form-pocket-date').value;
 
       if (!name) {
-        showToast("Nama kantong wajib diisi");
+        showGlassToast('Nama Kosong', 'Isi nama kantong terlebih dahulu', '!', 'orange');
+        return;
+      }
+      if (target <= 0) {
+        showGlassToast('Target Invalid', 'Target dana harus lebih dari Rp 0', '!', 'orange');
         return;
       }
 
       if (editingPocketId) {
-        const p = state.pockets.find((item) => item.id === editingPocketId);
-        if (p) {
-          p.name = name;
-          p.target = target;
-          p.emoji = emoji;
-          p.color = selectedColor;
+        const pocket = state.pockets.find(p => p.id === editingPocketId);
+        if (!pocket) return;
+
+        const wasBelow = pocket.saved < pocket.target;
+        pocket.name = name;
+        pocket.target = target;
+        pocket.saved = savedAmount;
+        pocket.targetDate = targetDate || '2027-12-31';
+        pocket.icon = formIcon;
+        pocket.color = formColor;
+
+        saveState();
+        updateHeroBalance(true);
+        renderPockets();
+        if (activeTab === 'statistik') renderStatistics();
+        if (activeTab === 'riwayat') renderHistory();
+        closeAllSheets();
+
+        if (wasBelow && savedAmount >= target) {
+          playTactileTone('celebrate');
+          triggerConfettiBurst();
+          showGlassToast('Target Tercapai!', `${name} mencapai 100%`, '100%', 'green');
+        } else {
+          playTactileTone('success');
+          showGlassToast('Kantong Diperbarui', name, 'Tersimpan', 'blue');
         }
-        showToast("Kantong diperbarui");
       } else {
-        state.pockets.push({
-          id: "p_" + Date.now(),
-          name,
-          target,
-          balance: 0,
-          emoji,
-          color: selectedColor
-        });
-        showToast("Kantong baru ditambahkan");
+        const newPocket = {
+          id: 'pkt-' + Date.now(),
+          name: name,
+          icon: formIcon,
+          target: target,
+          saved: savedAmount,
+          targetDate: targetDate || '2027-12-31',
+          color: formColor
+        };
+
+        state.pockets.unshift(newPocket);
+
+        if (savedAmount > 0) {
+          state.transactions.unshift({
+            id: 'tx-' + Date.now(),
+            pocketId: newPocket.id,
+            pocketName: newPocket.name,
+            pocketIcon: newPocket.icon,
+            pocketColor: newPocket.color,
+            type: 'deposit',
+            amount: savedAmount,
+            note: 'Saldo awal kantong baru',
+            timestamp: new Date().toISOString()
+          });
+        }
+
+        saveState();
+        updateHeroBalance(true);
+        renderPockets();
+        if (activeTab === 'statistik') renderStatistics();
+        if (activeTab === 'riwayat') renderHistory();
+        closeAllSheets();
+
+        if (savedAmount >= target) {
+          playTactileTone('celebrate');
+          triggerConfettiBurst();
+          showGlassToast('Target Tercapai!', `${name} langsung terpenuhi!`, '100%', 'green');
+        } else {
+          playTactileTone('success');
+          showGlassToast('Kantong Dibuat', name, 'Baru', 'blue');
+        }
       }
-
-      saveState();
-      closeSheet("pocketSheet");
-      render();
-    });
-
-    document.getElementById("pocketDeleteBtn").addEventListener("click", () => {
-      if (!editingPocketId || state.pockets.length <= 1) return;
-      state.pockets = state.pockets.filter((p) => p.id !== editingPocketId);
-      saveState();
-      closeSheet("pocketSheet");
-      render();
-      showToast("Kantong dihapus");
-    });
-
-    ["txSheet", "pocketSheet"].forEach((id) => {
-      document.getElementById(id).addEventListener("click", (e) => {
-        if (e.target.id === id) closeSheet(id);
-      });
-    });
-
-    window.addEventListener("scroll", () => {
-      const hdr = document.getElementById("topHeader");
-      hdr.classList.toggle("scrolled", window.scrollY > 14);
-    }, { passive: true });
-
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js").catch(() => {});
-      });
     }
 
-    render();
+    /* =========================================================================
+       11. STATISTIK: INTERACTIVE DONUT CHART, MONTHLY BARS & PERFORMANCE SUMMARY
+       ========================================================================= */
+    function renderStatistics() {
+      renderDonutAllocation();
+      renderMonthlyBars();
+      renderSmartInsights();
+    }
+
+    function renderDonutAllocation() {
+      const svg = document.getElementById('donut-svg');
+      const legend = document.getElementById('donut-legend');
+      const centerLabel = document.getElementById('donut-center-label');
+      if (!svg || !legend) return;
+
+      const total = getTotalSaved();
+      centerLabel.textContent = formatCompactRupiah(total);
+
+      const radius = 48;
+      const circumference = 2 * Math.PI * radius;
+
+      if (total <= 0 || state.pockets.length === 0) {
+        svg.innerHTML = `<circle cx="66" cy="66" r="${radius}" fill="none" stroke="var(--bg-glass-elevated)" stroke-width="14"></circle>`;
+        legend.innerHTML = `<p style="font-size: 12px; color: var(--text-secondary);">Belum ada saldo untuk ditampilkan.</p>`;
+        return;
+      }
+
+      let cumulativePct = 0;
+      const segments = state.pockets.map(p => {
+        const pct = (p.saved / total) * 100;
+        const dashLength = (pct / 100) * circumference;
+        const dashOffset = -(cumulativePct / 100) * circumference;
+        cumulativePct += pct;
+        return { pocket: p, pct, dashLength, dashOffset };
+      });
+
+      svg.innerHTML =
+        `<circle cx="66" cy="66" r="${radius}" fill="none" stroke="var(--bg-glass-elevated)" stroke-width="14"></circle>` +
+        segments.map(s => `
+          <circle cx="66" cy="66" r="${radius}" fill="none"
+                  stroke="${s.pocket.color}" stroke-width="14" stroke-linecap="round"
+                  stroke-dasharray="${Math.max(s.dashLength - 3, 0).toFixed(2)} ${circumference.toFixed(2)}"
+                  stroke-dashoffset="${s.dashOffset.toFixed(2)}"
+                  style="transition: stroke-dasharray 0.7s var(--spring-ios), stroke-dashoffset 0.7s var(--spring-ios); cursor: pointer;"
+                  onclick="showGlassToast('${escapeHtml(s.pocket.name)}', '${formatCompactRupiah(s.pocket.saved)} (${Math.round(s.pct)}%)', '${Math.round(s.pct)}%', 'blue')">
+          </circle>
+        `).join('');
+
+      legend.innerHTML = segments.slice(0, 4).map(s => `
+        <div onclick="showGlassToast('${escapeHtml(s.pocket.name)}', '${formatCompactRupiah(s.pocket.saved)}', '${Math.round(s.pct)}%', 'blue')"
+             style="display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 7px; min-width: 0;">
+            <span style="width: 9px; height: 9px; border-radius: 999px; flex-shrink: 0; background-color: ${s.pocket.color};"></span>
+            <span style="font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              ${escapeHtml(s.pocket.name)}
+            </span>
+          </div>
+          <span class="tabular-nums" style="font-size: 11px; font-weight: 800; color: var(--text-secondary); flex-shrink: 0;">
+            ${Math.round(s.pct)}%
+          </span>
+        </div>
+      `).join('');
+    }
+
+    function renderMonthlyBars() {
+      const container = document.getElementById('monthly-bars-container');
+      if (!container) return;
+
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      const now = new Date();
+      const baseDeposits = [3200000, 4100000, 3850000, 5200000, 4900000];
+      const baseWithdraws = [650000, 900000, 500000, 1100000, 750000];
+
+      const curDep = state.transactions
+        .filter(t => {
+          const d = new Date(t.timestamp);
+          return t.type === 'deposit' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        })
+        .reduce((s, t) => s + t.amount, 0);
+
+      const curWit = state.transactions
+        .filter(t => {
+          const d = new Date(t.timestamp);
+          return t.type === 'withdraw' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        })
+        .reduce((s, t) => s + t.amount, 0);
+
+      const bars = [];
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const label = monthNames[d.getMonth()];
+        const depositVal = i === 0 ? Math.max(curDep, 1500000) : baseDeposits[5 - i];
+        const withdrawVal = i === 0 ? curWit : baseWithdraws[5 - i];
+        bars.push({ label, depositVal, withdrawVal, isCurrent: i === 0 });
+      }
+
+      const maxVal = Math.max(...bars.map(b => Math.max(b.depositVal, b.withdrawVal)), 1);
+
+      container.innerHTML = bars.map(bar => {
+        const depH = Math.max(Math.round((bar.depositVal / maxVal) * 100), 14);
+        const witH = bar.withdrawVal > 0 ? Math.max(Math.round((bar.withdrawVal / maxVal) * 100), 10) : 4;
+        return `
+          <div onclick="showGlassToast('Bulan ${bar.label}', 'Setor ${formatCompactRupiah(bar.depositVal)} • Tarik ${formatCompactRupiah(bar.withdrawVal)}', '${bar.label}', 'blue')"
+               class="ios-press-sm"
+               style="flex: 1; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px; cursor: pointer;">
+            <div style="width: 100%; flex: 1; display: flex; align-items: flex-end; justify-content: center; gap: 4px;">
+              <div style="width: 13px; height: ${depH}%; border-radius: 7px 7px 4px 4px; background-color: var(--ios-green); transition: height 0.65s var(--spring-ios);"></div>
+              <div style="width: 13px; height: ${witH}%; border-radius: 7px 7px 4px 4px; background-color: var(--ios-red); opacity: ${bar.withdrawVal > 0 ? '0.92' : '0.24'}; transition: height 0.65s var(--spring-ios);"></div>
+            </div>
+            <span style="font-size: 11px; font-weight: 800; color: ${bar.isCurrent ? 'var(--ios-blue)' : 'var(--text-secondary)'};">
+              ${bar.label}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderSmartInsights() {
+      const container = document.getElementById('insights-list');
+      if (!container) return;
+
+      const now = new Date();
+      const totalSaved = getTotalSaved();
+      const totalTarget = getTotalTarget();
+      const overallPct = totalTarget > 0 ? ((totalSaved / totalTarget) * 100).toFixed(1).replace('.', ',') : '0,0';
+
+      const activePockets = state.pockets
+        .filter(p => p.target > 0 && p.saved < p.target)
+        .sort((a, b) => (b.saved / b.target) - (a.saved / a.target));
+
+      const topPocket = activePockets[0];
+      const monthlyDeposits = state.transactions
+        .filter(t => {
+          const d = new Date(t.timestamp);
+          return t.type === 'deposit' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        })
+        .reduce((s, t) => s + t.amount, 0);
+
+      container.innerHTML = `
+        <div style="padding: 15px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+            <span style="width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background-color: ${topPocket ? topPocket.color + '24' : 'var(--ios-blue-soft)'}; color: ${topPocket ? topPocket.color : 'var(--ios-blue)'};">
+              ${topPocket ? getIconSvg(topPocket.icon) : getIconSvg('shield')}
+            </span>
+            <div style="min-width: 0;">
+              <p style="font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                ${topPocket ? 'Kantong Terdekat Target' : 'Semua Target Tercapai'}
+              </p>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                ${topPocket ? `${escapeHtml(topPocket.name)} (kurang ${formatRupiah(topPocket.target - topPocket.saved)})` : 'Seluruh target tabungan terpenuhi'}
+              </p>
+            </div>
+          </div>
+          <span class="tabular-nums" style="font-size: 12px; font-weight: 800; flex-shrink: 0; color: ${topPocket ? topPocket.color : 'var(--ios-green)'};">
+            ${topPocket ? Math.round((topPocket.saved / topPocket.target) * 100) + '%' : '100%'}
+          </span>
+        </div>
+
+        <div style="padding: 15px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--separator-hairline);">
+          <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+            <span style="width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background-color: var(--ios-green-soft); color: var(--ios-green);">
+              ${getIconSvg('trending')}
+            </span>
+            <div style="min-width: 0;">
+              <p style="font-size: 13px; font-weight: 800;">Total Setoran Bulan Ini</p>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Akumulasi dana masuk bulan berjalan</p>
+            </div>
+          </div>
+          <span class="tabular-nums" style="font-size: 13px; font-weight: 800; flex-shrink: 0; color: var(--ios-green);">
+            ${formatRupiah(monthlyDeposits)}
+          </span>
+        </div>
+
+        <div style="padding: 15px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--separator-hairline);">
+          <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+            <span style="width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background-color: var(--ios-blue-soft); color: var(--ios-blue);">
+              ${getIconSvg('gift')}
+            </span>
+            <div style="min-width: 0;">
+              <p style="font-size: 13px; font-weight: 800;">Tingkat Pencapaian</p>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">Progres gabungan seluruh target</p>
+            </div>
+          </div>
+          <span class="tabular-nums" style="font-size: 13px; font-weight: 800; flex-shrink: 0; color: var(--ios-blue);">
+            ${overallPct}%
+          </span>
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       12. RIWAYAT: INSET GROUPED LIST WITH SEARCH & FILTER
+       ========================================================================= */
+    function setHistoryFilter(filter) {
+      playTactileTone('tap');
+      historyFilter = filter;
+      document.querySelectorAll('.history-filter-chip').forEach(btn => {
+        const active = btn.dataset.filter === filter;
+        btn.style.backgroundColor = active ? 'var(--ios-blue)' : 'transparent';
+        btn.style.color = active ? '#FFFFFF' : 'var(--text-secondary)';
+      });
+      renderHistory();
+    }
+
+    function formatRelativeGroupLabel(isoStr) {
+      const date = new Date(isoStr);
+      const now = new Date();
+      const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const diffDays = Math.round((startToday - startDate) / (1000 * 60 * 60 * 24));
+
+      if (diffDays <= 0) return 'Hari Ini';
+      if (diffDays === 1) return 'Kemarin';
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    }
+
+    function formatTimeShort(isoStr) {
+      const d = new Date(isoStr);
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      return `${hh}:${mm}`;
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('history-list-container');
+      const searchInput = document.getElementById('history-search');
+      if (!container) return;
+
+      const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+
+      const filtered = state.transactions.filter(tx => {
+        if (historyFilter !== 'all' && tx.type !== historyFilter) return false;
+        if (query) {
+          const matchName = (tx.pocketName || '').toLowerCase().includes(query);
+          const matchNote = (tx.note || '').toLowerCase().includes(query);
+          return matchName || matchNote;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="liquid-glass card-pad" style="text-align: center;">
+            <p style="font-size: 15px; font-weight: 800;">Tidak Ada Transaksi</p>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+              Belum ada riwayat transaksi yang sesuai dengan filter atau pencarianmu.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      const groups = new Map();
+      filtered.forEach(tx => {
+        const label = formatRelativeGroupLabel(tx.timestamp);
+        if (!groups.has(label)) groups.set(label, []);
+        groups.get(label).push(tx);
+      });
+
+      let html = '';
+      groups.forEach((items, groupLabel) => {
+        html += `
+          <div>
+            <p style="padding: 0 4px 8px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary);">
+              ${escapeHtml(groupLabel)}
+            </p>
+            <div class="liquid-glass" style="overflow: hidden;">
+              ${items.map((tx, idx) => {
+                const isDeposit = tx.type === 'deposit';
+                const sign = isDeposit ? '+' : '−';
+                const amtColor = isDeposit ? 'var(--ios-green)' : 'var(--ios-red)';
+                const iconColor = tx.pocketColor || (isDeposit ? '#30D158' : '#FF453A');
+                const borderStyle = idx > 0 ? 'border-top: 1px solid var(--separator-hairline);' : '';
+
+                return `
+                  <div style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; ${borderStyle}">
+                    <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+                      <div style="width: 40px; height: 40px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background-color: ${iconColor}22; color: ${iconColor};">
+                        ${getIconSvg(tx.pocketIcon)}
+                      </div>
+                      <div style="min-width: 0;">
+                        <p style="font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                          ${escapeHtml(tx.pocketName)}
+                        </p>
+                        <p style="font-size: 11px; color: var(--text-secondary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                          ${escapeHtml(tx.note)} • ${formatTimeShort(tx.timestamp)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <span class="tabular-nums" style="font-size: 13px; font-weight: 800; flex-shrink: 0; color: ${amtColor};">
+                      ${state.privacyMode ? 'Rp •••••' : `${sign}${formatRupiah(tx.amount, false)}`}
+                    </span>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    /* =========================================================================
+       13. SAFE BACKGROUND PWA MANIFEST & INSTANT BOOTSTRAP
+       ========================================================================= */
+    function initSafeWebManifest() {
+      try {
+        const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="120" fill="#0A84FF"/><circle cx="256" cy="256" r="140" fill="none" stroke="#FFFFFF" stroke-width="36"/><path d="M256 184v144M212 224h88" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round"/></svg>`;
+        const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(iconSvg);
+        const manifestObj = {
+          name: 'SakuOne — Tabungan Galaxy S21 FE',
+          short_name: 'SakuOne',
+          description: 'Aplikasi tabungan pribadi modern dengan estetika iOS 27 Liquid Glass',
+          start_url: '.',
+          display: 'standalone',
+          orientation: 'portrait',
+          background_color: '#000000',
+          theme_color: '#000000',
+          icons: [{ src: iconUrl, sizes: '512x512', type: 'image/svg+xml' }]
+        };
+        const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+        const linkEl = document.getElementById('dynamic-manifest');
+        if (linkEl && window.URL && URL.createObjectURL) {
+          linkEl.setAttribute('href', URL.createObjectURL(blob));
+        }
+      } catch (e) {
+        // Safely ignore manifest blob issues in restricted iframes
+      }
+    }
+
+    function bootstrapApp() {
+      applyTheme();
+      applyPrivacyIcons();
+      setHeaderDateKicker();
+      initCollapsibleLargeTitle();
+      updateHeroBalance(false);
+      renderPockets();
+      setHistoryFilter('all');
+      initSafeWebManifest();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bootstrapApp);
+    } else {
+      bootstrapApp();
+    }
   </script>
 </body>
 </html>
